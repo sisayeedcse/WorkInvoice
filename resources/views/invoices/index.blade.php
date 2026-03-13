@@ -1,0 +1,100 @@
+@extends('layouts.app')
+@section('title', 'Invoices')
+@section('page-title', 'Invoices')
+
+@section('content')
+    <div class="page-header">
+        <div>
+            <h1>Invoices</h1>
+            <p class="text-muted mb-0" style="font-size:13px;">Track customer invoices and payments</p>
+        </div>
+        <div class="d-flex gap-2">
+            <form method="GET" class="d-flex gap-2">
+                <select name="status" class="form-select form-select-sm" style="width:auto;" onchange="this.form.submit()">
+                    <option value="">All Status</option>
+                    @foreach(['draft', 'sent', 'partial', 'paid', 'overdue', 'cancelled'] as $s)
+                        <option value="{{ $s }}" {{ request('status') == $s ? 'selected' : '' }}>{{ ucfirst($s) }}</option>
+                    @endforeach
+                </select>
+                @if(request('status'))<a href="{{ route('invoices.index') }}"
+                class="btn btn-sm btn-outline-secondary">Clear</a>@endif
+            </form>
+            <a href="{{ route('invoices.create') }}" class="btn btn-accent">
+                <i class="bi bi-plus-lg me-1"></i> New Invoice
+            </a>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="table-responsive">
+            <table id="invoicesTable" class="table mb-0" style="width:100%;">
+                <thead>
+                    <tr>
+                        <th>Invoice #</th>
+                        <th>Date</th>
+                        <th>Customer</th>
+                        <th>Total</th>
+                        <th>Paid</th>
+                        <th>Balance</th>
+                        <th>Status</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($invoices as $invoice)
+                        <tr>
+                            <td><a href="{{ route('invoices.show', $invoice) }}"
+                                    class="doc-number text-decoration-none">{{ $invoice->invoice_number }}</a></td>
+                            <td class="text-muted">{{ $invoice->date->format('d M Y') }}</td>
+                            <td class="fw-medium">{{ $invoice->customer->name ?? '—' }}</td>
+                            <td>AED {{ number_format($invoice->grand_total, 2) }}</td>
+                            <td class="text-success fw-semibold">AED {{ number_format($invoice->paid_amount, 2) }}</td>
+                            <td class="{{ $invoice->balance > 0 ? 'text-danger fw-semibold' : 'text-success' }}">AED
+                                {{ number_format($invoice->balance, 2) }}</td>
+                            <td>{!! $invoice->status_badge !!}</td>
+                            <td class="text-end">
+                                <a href="{{ route('invoices.show', $invoice) }}" class="btn btn-sm btn-light me-1"><i
+                                        class="bi bi-eye"></i></a>
+                                <a href="{{ route('invoices.pdf', $invoice) }}" class="btn btn-sm btn-light me-1"
+                                    target="_blank"><i class="bi bi-file-pdf text-danger"></i></a>
+                                <form method="POST" action="{{ route('invoices.destroy', $invoice) }}" class="d-inline"
+                                    onsubmit="return confirm('Delete this invoice?')">
+                                    @csrf @method('DELETE')
+                                    <button class="btn btn-sm btn-light text-danger"><i class="bi bi-trash"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="8" class="text-center py-5 text-muted">
+                                <i class="bi bi-receipt fs-1 d-block mb-2 opacity-25"></i>
+                                No invoices yet.
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+@endsection
+
+@push('scripts')
+    <script>
+        new DataTable('#invoicesTable', {
+            pageLength: 25,
+            order: [[1, 'desc']],
+            columnDefs: [
+                { orderable: false, targets: [7] }
+            ],
+            language: {
+                search: '',
+                searchPlaceholder: 'Search invoices...',
+                lengthMenu: 'Show _MENU_ entries',
+                info: 'Showing _START_–_END_ of _TOTAL_ invoices',
+                emptyTable: 'No invoices yet.',
+                zeroRecords: 'No matching invoices found.'
+            },
+            dom: "<'row mb-3 px-3'<'col-sm-6'l><'col-sm-6 d-flex justify-content-end'f>>rtip"
+        });
+    </script>
+@endpush
