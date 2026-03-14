@@ -466,7 +466,8 @@
                 <tr>
                     <th style="width:44px; text-align:center;">#</th>
                     <th style="min-width:220px;">Service / Item</th>
-                    <th style="min-width:200px;">Description</th>
+                    <th style="min-width:180px;">Description</th>
+                    <th style="width:110px;">Size <span style="font-weight:400;font-size:11px;color:#9ca3af;">(optional)</span></th>
                     <th style="width:100px; text-align:center;">Qty</th>
                     <th style="width:110px;">Unit</th>
                     <th style="width:140px;">Unit Price (AED)</th>
@@ -483,6 +484,9 @@
                     <td><input type="text" name="items[0][description]"
                                class="form-control"
                                placeholder="Optional details"></td>
+                    <td><input type="text" name="items[0][size]"
+                               class="form-control"
+                               placeholder="e.g. 2x3m"></td>
                     <td><input type="number" name="items[0][quantity]"
                                class="form-control qty-input text-center"
                                value="1" step="0.01" min="0.01" required></td>
@@ -607,6 +611,7 @@ function addRow(name, desc, price, unit) {
         '<td><div class="qf-row-num">' + (idx + 1) + '</div></td>' +
         '<td><input type="text" name="items[' + idx + '][item_name]" class="form-control item-name-input" value="' + escHtml(name) + '" placeholder="e.g. Painting Works" required autocomplete="off"></td>' +
         '<td><input type="text" name="items[' + idx + '][description]" class="form-control" value="' + escHtml(desc) + '" placeholder="Optional details"></td>' +
+        '<td><input type="text" name="items[' + idx + '][size]" class="form-control" value="" placeholder="e.g. 2x3m"></td>' +
         '<td><input type="number" name="items[' + idx + '][quantity]" class="form-control qty-input text-center" value="1" step="0.01" min="0.01" required></td>' +
         '<td><select name="items[' + idx + '][unit]" class="form-select">' + buildUnitOptions(unit) + '</select></td>' +
         '<td><input type="number" name="items[' + idx + '][unit_price]" class="form-control price-input" value="' + escHtml(price) + '" step="0.01" min="0" required></td>' +

@@ -334,6 +334,8 @@
                             <div class="description">{{ $item->item_name }}</div>
                             @if($item->description)
                             <div class="sub-description">{{ $item->description }}</div>@endif
+                            @if($item->size)
+                            <div class="sub-description">Size: {{ $item->size }}</div>@endif
                         </td>
                         <td class="text-center">{{ rtrim(rtrim(number_format($item->quantity, 2), '0'), '.') }}</td>
                         <td class="text-right">{{ $company['currency_symbol'] }} {{ number_format($item->unit_price, 2) }}
@@ -353,14 +355,16 @@
                             <tr>
                                 <td class="label">Subtotal</td>
                                 <td class="value">{{ $company['currency_symbol'] }}
-                                    {{ number_format($quotation->subtotal, 2) }}</td>
+                                    {{ number_format($quotation->subtotal, 2) }}
+                                </td>
                             </tr>
                         @endif
                         @if($quotation->discount > 0)
                             <tr>
                                 <td class="label">Discount</td>
                                 <td class="value">- {{ $company['currency_symbol'] }}
-                                    {{ number_format($quotation->discount, 2) }}</td>
+                                    {{ number_format($quotation->discount, 2) }}
+                                </td>
                             </tr>
                         @endif
                         @if($quotation->tax > 0)
@@ -374,7 +378,8 @@
                         <tr>
                             <td class="label">Grand Total</td>
                             <td class="value">{{ $company['currency_symbol'] }}
-                                {{ number_format($quotation->grand_total, 2) }}</td>
+                                {{ number_format($quotation->grand_total, 2) }}
+                            </td>
                         </tr>
                     </table>
                 </td>

@@ -108,7 +108,8 @@
                             <thead>
                                 <tr class="table-light">
                                     <th style="min-width:180px;">Service / Item</th>
-                                    <th style="min-width:140px;">Description</th>
+                                    <th style="min-width:130px;">Description</th>
+                                    <th style="min-width:100px;">Size <small class="text-muted fw-normal">(opt.)</small></th>
                                     <th style="width:80px;">Qty</th>
                                     <th style="width:95px;">Unit</th>
                                     <th style="width:110px;">Price</th>
@@ -124,6 +125,8 @@
                                         </td>
                                         <td><input type="text" name="items[{{ $i }}][description]" class="form-control"
                                                 value="{{ $item->description }}"></td>
+                                        <td><input type="text" name="items[{{ $i }}][size]" class="form-control"
+                                                value="{{ $item->size }}" placeholder="e.g. 2x3m"></td>
                                         <td><input type="number" name="items[{{ $i }}][quantity]"
                                                 class="form-control qty-input text-center" value="{{ $item->quantity }}"
                                                 step="0.01" min="0.01" required></td>
@@ -184,6 +187,7 @@
             tr.innerHTML = `
             <td><input type="text" name="items[${rowIndex}][item_name]" class="form-control item-name-input" value="${name}" required></td>
             <td><input type="text" name="items[${rowIndex}][description]" class="form-control" value="${desc}"></td>
+            <td><input type="text" name="items[${rowIndex}][size]" class="form-control" value="" placeholder="e.g. 2x3m"></td>
             <td><input type="number" name="items[${rowIndex}][quantity]" class="form-control qty-input text-center" value="1" step="0.01" min="0.01" required></td>
             <td><select name="items[${rowIndex}][unit]" class="form-select">${opts}</select></td>
             <td><input type="number" name="items[${rowIndex}][unit_price]" class="form-control price-input" value="${price}" step="0.01" min="0" required></td>
