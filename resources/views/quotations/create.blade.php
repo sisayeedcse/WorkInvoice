@@ -1,225 +1,657 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 @section('title', 'New Quotation')
 @section('page-title', 'New Quotation')
 
+@push('styles')
+<style>
+/* ─── Page Hero ─────────────────────────────── */
+.qf-hero {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    border-radius: var(--radius-xl);
+    padding: 28px 32px;
+    margin-bottom: 28px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    box-shadow: 0 8px 32px rgba(31,47,135,.22);
+}
+.qf-hero-left h1 { font-size: 1.5rem; font-weight: 700; margin: 0 0 4px; }
+.qf-hero-left p  { font-size: .825rem; opacity: .78; margin: 0; }
+.qf-hero-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.25);
+    border-radius: var(--radius-full); padding: 5px 14px;
+    font-size: .75rem; font-weight: 600; white-space: nowrap;
+}
+.qf-hero-steps {
+    display: flex; align-items: center; gap: 0;
+    background: rgba(255,255,255,.12); border-radius: var(--radius-full);
+    padding: 4px 8px;
+}
+.qf-step {
+    display: flex; align-items: center; gap: 6px;
+    font-size: .72rem; font-weight: 600; opacity: .65;
+    padding: 4px 10px; border-radius: var(--radius-full);
+    transition: all .2s;
+}
+.qf-step.active { background: rgba(255,255,255,.25); opacity: 1; }
+.qf-step-num {
+    width: 18px; height: 18px; border-radius: 50%;
+    background: rgba(255,255,255,.3); display: flex;
+    align-items: center; justify-content: center; font-size: .65rem;
+}
+.qf-step.active .qf-step-num { background: #fff; color: var(--primary); }
+.qf-step-sep { width: 20px; height: 1px; background: rgba(255,255,255,.3); margin: 0 2px; }
+
+/* ─── Section Cards ─────────────────────────── */
+.qf-section {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+.qf-section-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 22px;
+    background: linear-gradient(180deg, #fff 0%, var(--gray-50) 100%);
+    border-bottom: 1px solid var(--border-primary);
+}
+.qf-section-title {
+    display: flex; align-items: center; gap: 10px;
+    font-size: .875rem; font-weight: 700; color: var(--text-primary);
+}
+.qf-section-icon {
+    width: 30px; height: 30px; border-radius: var(--radius-sm);
+    background: var(--accent-200); color: var(--accent-800);
+    display: flex; align-items: center; justify-content: center;
+    font-size: .85rem;
+}
+.qf-section-badge {
+    font-size: .7rem; font-weight: 700; color: var(--gray-600);
+    background: var(--gray-100); border-radius: var(--radius-full);
+    padding: 2px 10px; border: 1px solid var(--gray-300);
+}
+.qf-section-body { padding: 22px; }
+
+/* ─── Field Labels ───────────────────────────── */
+.qf-label {
+    display: block; font-size: .775rem; font-weight: 600;
+    color: var(--gray-700); margin-bottom: 5px; letter-spacing: .02em;
+}
+.qf-label .req { color: var(--danger); margin-left: 2px; }
+
+/* ─── Input with Icon ────────────────────────── */
+.qf-input-wrap { position: relative; }
+.qf-input-wrap .qf-input-icon {
+    position: absolute; left: 11px; top: 50%; transform: translateY(-50%);
+    color: var(--gray-400); font-size: .9rem; pointer-events: none; z-index: 2;
+}
+.qf-input-wrap .form-control,
+.qf-input-wrap .form-select {
+    padding-left: 34px;
+}
+
+/* ─── Customer Select ─────────────────────────── */
+.qf-customer-select {
+    font-size: .875rem !important;
+    border: 1.5px solid var(--border-primary) !important;
+    border-radius: var(--radius-md) !important;
+    padding: 10px 12px 10px 34px !important;
+    transition: border-color .18s, box-shadow .18s !important;
+}
+.qf-customer-select:focus {
+    border-color: var(--primary-light) !important;
+    box-shadow: 0 0 0 3px rgba(47,67,206,.1) !important;
+}
+
+/* ─── Info Grid ──────────────────────────────── */
+.qf-info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+@media (max-width: 576px) { .qf-info-grid { grid-template-columns: 1fr; } }
+
+/* ─── Quick Add Pills ────────────────────────── */
+.qf-pills-wrap { display: flex; flex-wrap: wrap; gap: 8px; }
+.qf-pill {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 5px 13px; border-radius: var(--radius-full);
+    font-size: .75rem; font-weight: 600;
+    background: var(--gray-100); border: 1.5px solid var(--gray-200);
+    color: var(--text-primary); cursor: pointer;
+    transition: all .16s; user-select: none;
+}
+.qf-pill:hover {
+    background: var(--primary-50); border-color: var(--primary-300);
+    color: var(--primary-700); transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(47,67,206,.12);
+}
+.qf-pill i { font-size: .7rem; }
+
+/* ─── Items Table ────────────────────────────── */
+.qf-table-wrap { overflow-x: auto; }
+.qf-table {
+    width: 100%; border-collapse: collapse;
+}
+.qf-table thead th {
+    background: var(--gray-100);
+    font-size: .675rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .06em; color: var(--gray-700);
+    padding: 10px 10px; border-bottom: 2px solid var(--gray-300);
+    white-space: nowrap;
+}
+.qf-table tbody tr.item-row {
+    transition: background .15s;
+    border-bottom: 1px solid var(--gray-100);
+}
+.qf-table tbody tr.item-row:last-child { border-bottom: none; }
+.qf-table tbody tr.item-row:hover { background: var(--gray-50); }
+.qf-table td { padding: 8px 8px; vertical-align: middle; }
+.qf-table td .form-control,
+.qf-table td .form-select {
+    font-size: .8rem; border-radius: var(--radius-sm); padding: 6px 9px;
+    border-color: var(--gray-200); transition: border-color .15s;
+}
+.qf-table td .form-control:focus,
+.qf-table td .form-select:focus {
+    border-color: var(--primary-300); box-shadow: 0 0 0 2.5px rgba(47,67,206,.08);
+}
+.qf-row-num {
+    width: 22px; height: 22px; border-radius: 50%;
+    background: var(--gray-200); color: var(--gray-700);
+    font-size: .68rem; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto;
+}
+.qf-row-total {
+    font-size: .825rem; font-weight: 700; color: var(--primary);
+    text-align: right; padding-right: 4px;
+}
+.qf-remove-btn {
+    width: 26px; height: 26px; border-radius: 50%;
+    background: transparent; border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--gray-400); font-size: .85rem;
+    transition: all .15s; margin: 0 auto;
+}
+.qf-remove-btn:hover { background: var(--danger-light); color: var(--danger); }
+.qf-add-row-btn {
+    display: inline-flex; align-items: center; gap: 7px;
+    margin: 12px 12px 14px;
+    padding: 7px 16px; border-radius: var(--radius-full);
+    font-size: .78rem; font-weight: 600;
+    background: transparent; border: 1.5px dashed var(--primary-300);
+    color: var(--primary-600); cursor: pointer; transition: all .16s;
+}
+.qf-add-row-btn:hover {
+    background: var(--primary-50); border-style: solid;
+    border-color: var(--primary-400); transform: translateY(-1px);
+}
+
+/* ─── Summary Sidebar ────────────────────────── */
+.qf-summary-card {
+    background: linear-gradient(160deg, var(--primary) 0%, var(--primary-light) 100%);
+    border-radius: var(--radius-xl);
+    box-shadow: 0 12px 40px rgba(31,47,135,.2);
+    color: #fff; overflow: hidden;
+    position: sticky; top: calc(var(--topbar-h) + 20px);
+}
+.qf-summary-header {
+    padding: 20px 22px 16px;
+    border-bottom: 1px solid rgba(255,255,255,.15);
+}
+.qf-summary-header h3 {
+    font-size: .85rem; font-weight: 700; margin: 0 0 2px;
+    color: rgba(255,255,255,.95); text-transform: uppercase; letter-spacing: .06em;
+}
+.qf-summary-grand-total {
+    font-size: 2rem; font-weight: 800; line-height: 1.1;
+}
+.qf-summary-grand-total small { font-size: .75rem; font-weight: 500; opacity: .7; margin-right: 4px; }
+.qf-summary-body { padding: 18px 22px; }
+.qf-summary-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,.1);
+    font-size: .8rem;
+}
+.qf-summary-row:last-child { border-bottom: none; }
+.qf-summary-row .lbl { color: rgba(255,255,255,.8); }
+.qf-summary-row .val { font-weight: 600; color: #fff; }
+.qf-summary-input-group { margin-top: 14px; }
+.qf-summary-input-group label {
+    font-size: .72rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .05em; color: rgba(255,255,255,.9); display: block; margin-bottom: 5px;
+}
+.qf-summary-input {
+    background: rgba(255,255,255,.15) !important;
+    border: 1px solid rgba(255,255,255,.35) !important;
+    border-radius: var(--radius-md) !important;
+    color: #fff !important;
+    -webkit-text-fill-color: #fff !important;
+    font-weight: 600 !important;
+    font-size: .85rem !important; padding: 8px 12px !important;
+    width: 100%;
+}
+.qf-summary-input::placeholder { color: rgba(255,255,255,.5) !important; -webkit-text-fill-color: rgba(255,255,255,.5) !important; }
+.qf-summary-input:focus {
+    outline: none;
+    border-color: rgba(255,255,255,.65) !important;
+    box-shadow: 0 0 0 3px rgba(255,255,255,.15) !important;
+    background: rgba(255,255,255,.22) !important;
+}
+
+/* ─── Tip Card ───────────────────────────────── */
+.qf-tip {
+    background: var(--primary-50);
+    border: 1px solid var(--primary-100);
+    border-left: 3px solid var(--primary-300);
+    border-radius: var(--radius-md);
+    padding: 12px 14px;
+    font-size: .78rem; color: var(--primary-700);
+    line-height: 1.5; margin-top: 16px;
+}
+.qf-tip strong { display: block; margin-bottom: 3px; }
+
+/* ─── Actions ────────────────────────────────── */
+.qf-actions {
+    display: flex; gap: 10px; align-items: center;
+    padding: 20px 22px;
+    background: var(--gray-50);
+    border-top: 1px solid var(--border-primary);
+}
+.btn-qf-save {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
+    color: #fff; border: none; border-radius: var(--radius-full);
+    padding: 10px 28px; font-size: .875rem; font-weight: 700;
+    cursor: pointer; transition: all .18s;
+    box-shadow: 0 4px 14px rgba(240,141,34,.3);
+}
+.btn-qf-save:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(240,141,34,.4); color:#fff; }
+.btn-qf-save:active { transform: translateY(0); }
+.btn-qf-cancel {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: transparent; border: 1.5px solid var(--border-primary);
+    color: var(--text-secondary); border-radius: var(--radius-full);
+    padding: 9px 22px; font-size: .875rem; font-weight: 600;
+    text-decoration: none; transition: all .16s;
+}
+.btn-qf-cancel:hover { background: var(--gray-100); color: var(--text-primary); }
+
+/* ─── Mobile ─────────────────────────────────── */
+@media (max-width: 991px) {
+    .qf-summary-card { position: static; margin-bottom: 20px; }
+    .qf-hero { flex-direction: column; align-items: flex-start; }
+    .qf-hero-steps { display: none; }
+    .qf-hero { padding: 22px 20px; }
+}
+@media (max-width: 640px) {
+    .qf-hero-left h1 { font-size: 1.2rem; }
+    .qf-info-grid { grid-template-columns: 1fr; }
+}
+</style>
+@endpush
+
 @section('content')
-<div class="page-header">
-    <div>
-        <nav aria-label="breadcrumb"><ol class="breadcrumb mb-1">
-            <li class="breadcrumb-item"><a href="{{ route('quotations.index') }}">Quotations</a></li>
-            <li class="breadcrumb-item active">New</li>
-        </ol></nav>
-        <h1>Create New Quotation</h1>
-        <p class="text-muted mb-0" style="font-size:13px;">Build a clear customer proposal with faster item entry and a cleaner financial summary.</p>
+
+{{-- ─── Hero Header ─── --}}
+<div class="qf-hero">
+    <div class="qf-hero-left">
+        <div class="qf-hero-badge mb-2">
+            <i class="bi bi-file-earmark-text-fill"></i> New Quotation
+        </div>
+        <h1>Create Quotation</h1>
+        <p>Fill in customer, dates, and line items — the system handles the numbering and totals.</p>
+    </div>
+    <div class="qf-hero-steps d-none d-md-flex">
+        <div class="qf-step active">
+            <div class="qf-step-num">1</div>
+            <span>Customer</span>
+        </div>
+        <div class="qf-step-sep"></div>
+        <div class="qf-step active">
+            <div class="qf-step-num">2</div>
+            <span>Details</span>
+        </div>
+        <div class="qf-step-sep"></div>
+        <div class="qf-step active">
+            <div class="qf-step-num">3</div>
+            <span>Items</span>
+        </div>
+        <div class="qf-step-sep"></div>
+        <div class="qf-step active">
+            <div class="qf-step-num">4</div>
+            <span>Review</span>
+        </div>
     </div>
 </div>
 
 <form method="POST" action="{{ route('quotations.store') }}" id="quoteForm">
 @csrf
-<div class="row g-3">
+<div class="row g-4">
 
-    <!-- Left: Customer & Header -->
-    <div class="col-12 col-lg-4 sticky-summary">
-        <div class="card mb-3">
-            <div class="card-header"><i class="bi bi-person me-2" style="color:var(--accent);"></i>Customer</div>
-            <div class="card-body">
-                <label class="form-label">Select Customer <span class="text-danger">*</span></label>
-                <select name="customer_id" class="form-select @error('customer_id') is-invalid @enderror" required>
-                    <option value="">— Select Customer —</option>
+{{-- ══════════════════════════════════════
+     LEFT COLUMN — Summary (Sticky)
+══════════════════════════════════════ --}}
+<div class="col-12 col-lg-4 order-lg-last">
+
+    {{-- Summary Card --}}
+    <div class="qf-summary-card">
+        <div class="qf-summary-header">
+            <h3><i class="bi bi-receipt me-1"></i> Quote Summary</h3>
+            <div class="qf-summary-grand-total">
+                <small>AED</small><span id="display-grand-total">0.00</span>
+            </div>
+        </div>
+        <div class="qf-summary-body">
+            <div class="qf-summary-row">
+                <span class="lbl">Subtotal</span>
+                <span class="val" id="display-subtotal">AED 0.00</span>
+            </div>
+            <div class="qf-summary-row">
+                <span class="lbl">Discount</span>
+                <span class="val" id="display-discount-val">— AED 0.00</span>
+            </div>
+            <div class="qf-summary-row">
+                <span class="lbl">Tax</span>
+                <span class="val" id="display-tax-val">+ AED 0.00</span>
+            </div>
+
+            <div class="qf-summary-input-group mt-3">
+                <label>Discount (AED)</label>
+                <input type="number" name="discount" id="discount"
+                       class="form-control qf-summary-input"
+                       value="{{ old('discount', '0') }}" step="0.01" min="0"
+                       placeholder="0.00">
+            </div>
+            <div class="qf-summary-input-group">
+                <label>Tax Rate (%)</label>
+                <input type="number" name="tax" id="tax"
+                       class="form-control qf-summary-input"
+                       value="{{ old('tax', '0') }}" step="0.1" min="0" max="100"
+                       placeholder="0">
+            </div>
+        </div>
+    </div>
+
+    <div class="qf-tip">
+        <strong><i class="bi bi-lightbulb-fill me-1"></i> Workflow tip</strong>
+        Once saved, you can convert this quotation directly into an Order or Invoice from the quotation detail page — no re-entry needed.
+    </div>
+</div>
+
+{{-- ══════════════════════════════════════
+     RIGHT COLUMN — Main Form
+══════════════════════════════════════ --}}
+<div class="col-12 col-lg-8 order-lg-first">
+
+    {{-- ── Section 1: Customer ── --}}
+    <div class="qf-section">
+        <div class="qf-section-header">
+            <div class="qf-section-title">
+                <div class="qf-section-icon"><i class="bi bi-person-fill"></i></div>
+                Customer
+            </div>
+            <span class="qf-section-badge">Step 1</span>
+        </div>
+        <div class="qf-section-body">
+            <label class="qf-label">Select Customer <span class="req">*</span></label>
+            <div class="qf-input-wrap">
+                <i class="bi bi-search qf-input-icon"></i>
+                <select name="customer_id"
+                        class="form-select qf-customer-select @error('customer_id') is-invalid @enderror"
+                        required>
+                    <option value="">— Choose a customer —</option>
                     @foreach($customers as $customer)
-                    <option value="{{ $customer->id }}" {{ old('customer_id', request('customer_id')) == $customer->id ? 'selected' : '' }}>
-                        {{ $customer->name }}{{ $customer->company_name ? ' ('.$customer->company_name.')' : '' }}
+                    <option value="{{ $customer->id }}"
+                        {{ old('customer_id', request('customer_id')) == $customer->id ? 'selected' : '' }}>
+                        {{ $customer->name }}{{ $customer->company_name ? ' · '.$customer->company_name : '' }}
                     </option>
                     @endforeach
                 </select>
-                @error('customer_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                <div class="mt-2">
-                    <a href="{{ route('customers.create') }}" class="text-muted" style="font-size:12px;">
-                        <i class="bi bi-plus-circle me-1"></i>Add new customer
-                    </a>
-                </div>
             </div>
-        </div>
-
-        <div class="card mb-3">
-            <div class="card-header"><i class="bi bi-calendar me-2" style="color:var(--accent);"></i>Dates</div>
-            <div class="card-body">
-                <div class="mb-3">
-                    <label class="form-label">Quotation Number</label>
-                    <input type="text" name="quotation_number" class="form-control @error('quotation_number') is-invalid @enderror"
-                           value="{{ old('quotation_number') }}" placeholder="Leave blank to auto-generate">
-                    @error('quotation_number')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                    <div class="form-text">If left blank, the system will generate it automatically.</div>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Quotation Date <span class="text-danger">*</span></label>
-                    <input type="date" name="date" class="form-control"
-                           value="{{ old('date', date('Y-m-d')) }}" required>
-                </div>
-                <div>
-                    <label class="form-label">Valid Until</label>
-                    <input type="date" name="valid_until" class="form-control"
-                           value="{{ old('valid_until', date('Y-m-d', strtotime('+30 days'))) }}">
-                </div>
-                <div class="mt-3">
-                    <label class="form-label">Prepared By</label>
-                    <input type="text" name="prepared_by" class="form-control"
-                           value="{{ old('prepared_by') }}" placeholder="Name of quotation maker">
-                </div>
+            @error('customer_id')<div class="invalid-feedback d-block mt-1">{{ $message }}</div>@enderror
+            <div class="mt-2">
+                <a href="{{ route('customers.create') }}" class="text-muted" style="font-size:.78rem;">
+                    <i class="bi bi-plus-circle me-1"></i>Create a new customer
+                </a>
             </div>
-        </div>
-
-        <div class="card">
-            <div class="card-header"><i class="bi bi-calculator me-2" style="color:var(--accent);"></i>Summary</div>
-            <div class="card-body">
-                <div class="d-flex justify-content-between mb-2" style="font-size:13.5px;">
-                    <span class="text-muted">Subtotal</span>
-                    <span id="display-subtotal" class="fw-semibold">AED 0.00</span>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Discount (AED)</label>
-                    <input type="number" name="discount" id="discount" class="form-control"
-                           value="{{ old('discount', '0') }}" step="0.01" min="0">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Tax (%)</label>
-                    <input type="number" name="tax" id="tax" class="form-control"
-                           value="{{ old('tax', '0') }}" step="0.1" min="0" max="100">
-                </div>
-                <hr>
-                <div class="d-flex justify-content-between">
-                    <span class="fw-bold" style="font-size:15px;">Grand Total</span>
-                    <span id="display-grand-total" class="fw-bold" style="font-size:15px;color:var(--accent);">AED 0.00</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="surface-note mt-3">
-            <strong>Quotation flow</strong><br>
-            Start with the customer, confirm dates, add services, and review totals before sending or converting later to an order.
         </div>
     </div>
 
-    <!-- Right: Items + Notes -->
-    <div class="col-12 col-lg-8">
-
-        <!-- Services Quick Select -->
-        <div class="card mb-3">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <span><i class="bi bi-tools me-2" style="color:var(--accent);"></i>Quick Add from Library</span>
+    {{-- ── Section 2: Quote Details ── --}}
+    <div class="qf-section">
+        <div class="qf-section-header">
+            <div class="qf-section-title">
+                <div class="qf-section-icon"><i class="bi bi-file-earmark-text"></i></div>
+                Quotation Details
             </div>
-            <div class="card-body pb-2">
-                <div class="d-flex flex-wrap gap-2" id="quick-items-container">
-                    @foreach($items->take(12) as $item)
-                    <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill quick-add-btn"
-                            data-name="{{ $item->name }}"
-                            data-price="{{ $item->default_price }}"
-                            data-unit="{{ $item->unit }}"
-                            data-desc="{{ $item->description }}">
-                        <i class="bi bi-plus-circle me-1"></i>{{ $item->name }}
-                    </button>
-                    @endforeach
+            <span class="qf-section-badge">Step 2</span>
+        </div>
+        <div class="qf-section-body">
+            <div class="qf-info-grid">
+                <div>
+                    <label class="qf-label">Quotation Number</label>
+                    <div class="qf-input-wrap">
+                        <i class="bi bi-hash qf-input-icon"></i>
+                        <input type="text" name="quotation_number"
+                               class="form-control @error('quotation_number') is-invalid @enderror"
+                               value="{{ old('quotation_number') }}"
+                               placeholder="Auto-generated if blank">
+                    </div>
+                    @error('quotation_number')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
+                </div>
+                <div>
+                    <label class="qf-label">Prepared By</label>
+                    <div class="qf-input-wrap">
+                        <i class="bi bi-person-badge qf-input-icon"></i>
+                        <input type="text" name="prepared_by"
+                               class="form-control"
+                               value="{{ old('prepared_by') }}"
+                               placeholder="Your name or team">
+                    </div>
+                </div>
+                <div>
+                    <label class="qf-label">Quotation Date <span class="req">*</span></label>
+                    <div class="qf-input-wrap">
+                        <i class="bi bi-calendar-event qf-input-icon"></i>
+                        <input type="date" name="date"
+                               class="form-control"
+                               value="{{ old('date', date('Y-m-d')) }}" required>
+                    </div>
+                </div>
+                <div>
+                    <label class="qf-label">Valid Until</label>
+                    <div class="qf-input-wrap">
+                        <i class="bi bi-calendar-check qf-input-icon"></i>
+                        <input type="date" name="valid_until"
+                               class="form-control"
+                               value="{{ old('valid_until', date('Y-m-d', strtotime('+30 days'))) }}">
+                    </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- Items Table -->
-        <div class="card mb-3">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <span><i class="bi bi-list-ul me-2" style="color:var(--accent);"></i>Line Items</span>
-                <button type="button" class="btn btn-sm btn-primary rounded-pill" onclick="addRow()">
-                    <i class="bi bi-plus-lg me-1"></i> Add Row
+    {{-- ── Section 3: Line Items ── --}}
+    <div class="qf-section">
+        <div class="qf-section-header">
+            <div class="qf-section-title">
+                <div class="qf-section-icon"><i class="bi bi-list-ul"></i></div>
+                Line Items
+            </div>
+            <span class="qf-section-badge">Step 3</span>
+        </div>
+
+        {{-- Quick Add from Library --}}
+        @if($items->count())
+        <div style="padding: 14px 22px 0; border-bottom: 1px solid var(--border-primary);">
+            <div style="font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--gray-600); margin-bottom:8px;">
+                <i class="bi bi-lightning-fill me-1" style="color:var(--accent);"></i> Quick Add from Catalogue
+            </div>
+            <div class="qf-pills-wrap" style="padding-bottom:14px;">
+                @foreach($items->take(14) as $item)
+                <button type="button" class="qf-pill quick-add-btn"
+                        data-name="{{ $item->name }}"
+                        data-price="{{ $item->default_price }}"
+                        data-unit="{{ $item->unit }}"
+                        data-desc="{{ $item->description }}">
+                    <i class="bi bi-plus-lg"></i>{{ $item->name }}
                 </button>
-            </div>
-            <div class="table-responsive">
-                <table class="table mb-0" id="items-table">
-                    <thead>
-                        <tr class="table-light">
-                            <th style="min-width:180px;">Service / Item</th>
-                            <th style="min-width:150px;">Description</th>
-                            <th style="width:90px;">Qty</th>
-                            <th style="width:100px;">Unit</th>
-                            <th style="width:120px;">Unit Price</th>
-                            <th style="width:110px;">Total</th>
-                            <th style="width:40px;"></th>
-                        </tr>
-                    </thead>
-                    <tbody id="items-container">
-                        <tr class="item-row" data-index="0">
-                            <td><input type="text" name="items[0][item_name]" class="form-control item-name-input" placeholder="Service name" required autocomplete="off"></td>
-                            <td><input type="text" name="items[0][description]" class="form-control" placeholder="Optional"></td>
-                            <td><input type="number" name="items[0][quantity]" class="form-control qty-input text-center" value="1" step="0.01" min="0.01" required></td>
-                            <td><select name="items[0][unit]" class="form-select">
-                                @foreach(['Unit','Piece','Meter','Sqm','Kg','Set','Lot','Hour','Day','Job'] as $u)
-                                <option value="{{ $u }}">{{ $u }}</option>
-                                @endforeach
-                            </select></td>
-                            <td><input type="number" name="items[0][unit_price]" class="form-control price-input" value="0.00" step="0.01" min="0" required></td>
-                            <td><input type="text" class="form-control total-input bg-light text-end fw-semibold" value="0.00" readonly></td>
-                            <td class="text-center"><span class="remove-row" onclick="removeRow(this)"><i class="bi bi-x-circle-fill text-danger"></i></span></td>
-                        </tr>
-                    </tbody>
-                </table>
+                @endforeach
             </div>
         </div>
+        @endif
 
-        <!-- Notes & Terms -->
-        <div class="card">
-            <div class="card-body">
-                <div class="mb-3">
-                    <label class="form-label">Notes</label>
-                    <textarea name="notes" class="form-control" rows="2"
-                              placeholder="Additional notes for this quotation...">{{ old('notes') }}</textarea>
+        {{-- Table --}}
+        <div class="qf-table-wrap">
+            <table class="qf-table" id="items-table">
+                <thead>
+                    <tr>
+                        <th style="width:32px; text-align:center;">#</th>
+                        <th style="min-width:170px;">Service / Item</th>
+                        <th style="min-width:140px;">Description</th>
+                        <th style="width:80px; text-align:center;">Qty</th>
+                        <th style="width:95px;">Unit</th>
+                        <th style="width:115px;">Unit Price</th>
+                        <th style="width:110px; text-align:right;">Total</th>
+                        <th style="width:38px;"></th>
+                    </tr>
+                </thead>
+                <tbody id="items-container">
+                    <tr class="item-row" data-index="0">
+                        <td><div class="qf-row-num">1</div></td>
+                        <td><input type="text" name="items[0][item_name]"
+                                   class="form-control item-name-input"
+                                   placeholder="e.g. Painting Works" required autocomplete="off"></td>
+                        <td><input type="text" name="items[0][description]"
+                                   class="form-control"
+                                   placeholder="Optional details"></td>
+                        <td><input type="number" name="items[0][quantity]"
+                                   class="form-control qty-input text-center"
+                                   value="1" step="0.01" min="0.01" required></td>
+                        <td><select name="items[0][unit]" class="form-select">
+                            @foreach(['Unit','Piece','Meter','Sqm','Kg','Set','Lot','Hour','Day','Job'] as $u)
+                            <option value="{{ $u }}">{{ $u }}</option>
+                            @endforeach
+                        </select></td>
+                        <td><input type="number" name="items[0][unit_price]"
+                                   class="form-control price-input"
+                                   value="0.00" step="0.01" min="0" required></td>
+                        <td><div class="qf-row-total" id="row-total-0">0.00</div></td>
+                        <td><button type="button" class="qf-remove-btn" onclick="removeRow(this)" title="Remove">
+                            <i class="bi bi-trash3"></i>
+                        </button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <button type="button" class="qf-add-row-btn" onclick="addRow()">
+            <i class="bi bi-plus-lg"></i> Add Line Item
+        </button>
+    </div>
+
+    {{-- ── Section 4: Notes & Terms ── --}}
+    <div class="qf-section">
+        <div class="qf-section-header">
+            <div class="qf-section-title">
+                <div class="qf-section-icon"><i class="bi bi-chat-left-text"></i></div>
+                Notes &amp; Terms
+            </div>
+            <span class="qf-section-badge">Step 4</span>
+        </div>
+        <div class="qf-section-body">
+            <div class="row g-3">
+                <div class="col-12 col-md-5">
+                    <label class="qf-label">Notes</label>
+                    <textarea name="notes" class="form-control" rows="4"
+                              style="font-size:.85rem; resize:vertical;"
+                              placeholder="e.g. Thank you for the opportunity. This quote is valid for 30 days.">{{ old('notes') }}</textarea>
                 </div>
-                <div>
-                    <label class="form-label">Terms & Conditions</label>
-                    <textarea name="terms" class="form-control" rows="4">{{ old('terms') }}</textarea>
+                <div class="col-12 col-md-7">
+                    <label class="qf-label">Terms &amp; Conditions</label>
+                    <textarea name="terms" class="form-control" rows="4"
+                              style="font-size:.85rem; resize:vertical;"
+                              placeholder="e.g. Payment due within 15 days of invoice. All prices are exclusive of VAT unless stated.">{{ old('terms') }}</textarea>
                 </div>
             </div>
         </div>
-
-        <div class="d-flex gap-2 mt-3">
-            <button type="submit" class="btn btn-accent px-4">
-                <i class="bi bi-check-lg me-1"></i> Save Quotation
+        <div class="qf-actions">
+            <button type="submit" class="btn-qf-save">
+                <i class="bi bi-check2-circle"></i> Save Quotation
             </button>
-            <a href="{{ route('quotations.index') }}" class="btn btn-outline-secondary">Cancel</a>
+            <a href="{{ route('quotations.index') }}" class="btn-qf-cancel">
+                <i class="bi bi-x-lg"></i> Cancel
+            </a>
         </div>
     </div>
-</div>
+
+</div>{{-- /col right --}}
+</div>{{-- /row --}}
 </form>
 @endsection
 
 @push('scripts')
 <script>
 let rowIndex = 1;
+const UNITS = ['Unit','Piece','Meter','Sqm','Kg','Set','Lot','Hour','Day','Job'];
 
-function addRow(name = '', desc = '', price = '0.00', unit = 'Unit') {
-    const units = ['Unit','Piece','Meter','Sqm','Kg','Set','Lot','Hour','Day','Job'];
-    const optionsHtml = units.map(u => `<option value="${u}" ${u===unit?'selected':''}>${u}</option>`).join('');
+function buildUnitOptions(selected) {
+    selected = selected || 'Unit';
+    return UNITS.map(function(u) { return '<option value="' + u + '"' + (u===selected?' selected':'') + '>' + u + '</option>'; }).join('');
+}
 
-    const tr = document.createElement('tr');
+function addRow(name, desc, price, unit) {
+    name  = name  || '';
+    desc  = desc  || '';
+    price = price || '0.00';
+    unit  = unit  || 'Unit';
+    var idx = rowIndex;
+    var tr = document.createElement('tr');
     tr.className = 'item-row';
-    tr.dataset.index = rowIndex;
-    tr.innerHTML = `
-        <td><input type="text" name="items[${rowIndex}][item_name]" class="form-control item-name-input" value="${name}" placeholder="Service name" required autocomplete="off"></td>
-        <td><input type="text" name="items[${rowIndex}][description]" class="form-control" value="${desc}" placeholder="Optional"></td>
-        <td><input type="number" name="items[${rowIndex}][quantity]" class="form-control qty-input text-center" value="1" step="0.01" min="0.01" required></td>
-        <td><select name="items[${rowIndex}][unit]" class="form-select">${optionsHtml}</select></td>
-        <td><input type="number" name="items[${rowIndex}][unit_price]" class="form-control price-input" value="${price}" step="0.01" min="0" required></td>
-        <td><input type="text" class="form-control total-input bg-light text-end fw-semibold" value="0.00" readonly></td>
-        <td class="text-center"><span class="remove-row" onclick="removeRow(this)"><i class="bi bi-x-circle-fill text-danger"></i></span></td>`;
+    tr.dataset.index = idx;
+    tr.innerHTML =
+        '<td><div class="qf-row-num">' + (idx + 1) + '</div></td>' +
+        '<td><input type="text" name="items[' + idx + '][item_name]" class="form-control item-name-input" value="' + escHtml(name) + '" placeholder="e.g. Painting Works" required autocomplete="off"></td>' +
+        '<td><input type="text" name="items[' + idx + '][description]" class="form-control" value="' + escHtml(desc) + '" placeholder="Optional details"></td>' +
+        '<td><input type="number" name="items[' + idx + '][quantity]" class="form-control qty-input text-center" value="1" step="0.01" min="0.01" required></td>' +
+        '<td><select name="items[' + idx + '][unit]" class="form-select">' + buildUnitOptions(unit) + '</select></td>' +
+        '<td><input type="number" name="items[' + idx + '][unit_price]" class="form-control price-input" value="' + escHtml(price) + '" step="0.01" min="0" required></td>' +
+        '<td><div class="qf-row-total" id="row-total-' + idx + '">0.00</div></td>' +
+        '<td><button type="button" class="qf-remove-btn" onclick="removeRow(this)" title="Remove"><i class="bi bi-trash3"></i></button></td>';
 
     document.getElementById('items-container').appendChild(tr);
     bindRowEvents(tr);
     rowIndex++;
+    updateRowNumbers();
     calcTotals();
+    tr.querySelector('.item-name-input').focus();
 }
 
 function removeRow(btn) {
-    const rows = document.querySelectorAll('.item-row');
-    if (rows.length <= 1) { alert('At least one item is required.'); return; }
+    var rows = document.querySelectorAll('.item-row');
+    if (rows.length <= 1) {
+        var row = btn.closest('tr');
+        row.style.transition = 'background .1s';
+        row.style.background = 'var(--danger-light)';
+        setTimeout(function() { row.style.background = ''; }, 600);
+        return;
+    }
     btn.closest('tr').remove();
+    updateRowNumbers();
     calcTotals();
+}
+
+function updateRowNumbers() {
+    document.querySelectorAll('.item-row').forEach(function(row, i) {
+        var num = row.querySelector('.qf-row-num');
+        if (num) num.textContent = i + 1;
+    });
 }
 
 function bindRowEvents(row) {
@@ -228,35 +660,56 @@ function bindRowEvents(row) {
 }
 
 function calcTotals() {
-    let subtotal = 0;
-    document.querySelectorAll('.item-row').forEach(row => {
-        const qty   = parseFloat(row.querySelector('.qty-input')?.value)   || 0;
-        const price = parseFloat(row.querySelector('.price-input')?.value) || 0;
-        const total = qty * price;
-        const totalInput = row.querySelector('.total-input');
-        if (totalInput) totalInput.value = total.toFixed(2);
+    var subtotal = 0;
+    document.querySelectorAll('.item-row').forEach(function(row) {
+        var qty   = parseFloat(row.querySelector('.qty-input') ? row.querySelector('.qty-input').value : 0)   || 0;
+        var price = parseFloat(row.querySelector('.price-input') ? row.querySelector('.price-input').value : 0) || 0;
+        var total = qty * price;
+        var idx   = row.dataset.index;
+        var cell  = row.querySelector('.qf-row-total');
+        if (cell) cell.textContent = fmtNum(total);
         subtotal += total;
     });
 
-    const discount  = parseFloat(document.getElementById('discount')?.value)  || 0;
-    const taxPct    = parseFloat(document.getElementById('tax')?.value)        || 0;
-    const afterDisc = subtotal - discount;
-    const grandTotal = afterDisc + (afterDisc * taxPct / 100);
+    var discountEl = document.getElementById('discount');
+    var taxEl      = document.getElementById('tax');
+    var discount   = discountEl ? (parseFloat(discountEl.value) || 0) : 0;
+    var taxPct     = taxEl      ? (parseFloat(taxEl.value)      || 0) : 0;
+    var afterDisc  = Math.max(0, subtotal - discount);
+    var taxAmt     = afterDisc * taxPct / 100;
+    var grandTotal = afterDisc + taxAmt;
 
-    document.getElementById('display-subtotal').textContent   = 'AED ' + subtotal.toFixed(2);
-    document.getElementById('display-grand-total').textContent = 'AED ' + grandTotal.toFixed(2);
+    document.getElementById('display-subtotal').textContent     = 'AED ' + fmtNum(subtotal);
+    document.getElementById('display-discount-val').textContent = '— AED ' + fmtNum(discount);
+    document.getElementById('display-tax-val').textContent      = '+ AED ' + fmtNum(taxAmt);
+    document.getElementById('display-grand-total').textContent  = fmtNum(grandTotal);
 }
 
-// Bind events to existing rows on load
-document.querySelectorAll('.item-row').forEach(row => bindRowEvents(row));
-document.getElementById('discount')?.addEventListener('input', calcTotals);
-document.getElementById('tax')?.addEventListener('input', calcTotals);
+function fmtNum(n) {
+    return n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function escHtml(str) {
+    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// Init
+document.querySelectorAll('.item-row').forEach(function(row) { bindRowEvents(row); });
+var discEl = document.getElementById('discount');
+var taxEl2 = document.getElementById('tax');
+if (discEl) discEl.addEventListener('input', calcTotals);
+if (taxEl2) taxEl2.addEventListener('input', calcTotals);
 calcTotals();
 
-// Quick-add buttons
-document.querySelectorAll('.quick-add-btn').forEach(btn => {
+// Quick-add pills
+document.querySelectorAll('.quick-add-btn').forEach(function(btn) {
     btn.addEventListener('click', function() {
-        addRow(this.dataset.name, this.dataset.desc || '', parseFloat(this.dataset.price).toFixed(2), this.dataset.unit);
+        addRow(
+            this.dataset.name,
+            this.dataset.desc  || '',
+            parseFloat(this.dataset.price || 0).toFixed(2),
+            this.dataset.unit  || 'Unit'
+        );
     });
 });
 </script>
