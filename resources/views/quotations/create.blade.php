@@ -5,11 +5,12 @@
 @section('content')
 <div class="page-header">
     <div>
-        <nav aria-label="breadcrumb"><ol class="breadcrumb mb-1" style="font-size:12px;">
+        <nav aria-label="breadcrumb"><ol class="breadcrumb mb-1">
             <li class="breadcrumb-item"><a href="{{ route('quotations.index') }}">Quotations</a></li>
             <li class="breadcrumb-item active">New</li>
         </ol></nav>
         <h1>Create New Quotation</h1>
+        <p class="text-muted mb-0" style="font-size:13px;">Build a clear customer proposal with faster item entry and a cleaner financial summary.</p>
     </div>
 </div>
 
@@ -18,7 +19,7 @@
 <div class="row g-3">
 
     <!-- Left: Customer & Header -->
-    <div class="col-12 col-lg-4">
+    <div class="col-12 col-lg-4 sticky-summary">
         <div class="card mb-3">
             <div class="card-header"><i class="bi bi-person me-2" style="color:var(--accent);"></i>Customer</div>
             <div class="card-body">
@@ -44,6 +45,13 @@
             <div class="card-header"><i class="bi bi-calendar me-2" style="color:var(--accent);"></i>Dates</div>
             <div class="card-body">
                 <div class="mb-3">
+                    <label class="form-label">Quotation Number</label>
+                    <input type="text" name="quotation_number" class="form-control @error('quotation_number') is-invalid @enderror"
+                           value="{{ old('quotation_number') }}" placeholder="Leave blank to auto-generate">
+                    @error('quotation_number')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                    <div class="form-text">If left blank, the system will generate it automatically.</div>
+                </div>
+                <div class="mb-3">
                     <label class="form-label">Quotation Date <span class="text-danger">*</span></label>
                     <input type="date" name="date" class="form-control"
                            value="{{ old('date', date('Y-m-d')) }}" required>
@@ -52,6 +60,11 @@
                     <label class="form-label">Valid Until</label>
                     <input type="date" name="valid_until" class="form-control"
                            value="{{ old('valid_until', date('Y-m-d', strtotime('+30 days'))) }}">
+                </div>
+                <div class="mt-3">
+                    <label class="form-label">Prepared By</label>
+                    <input type="text" name="prepared_by" class="form-control"
+                           value="{{ old('prepared_by') }}" placeholder="Name of quotation maker">
                 </div>
             </div>
         </div>
@@ -79,6 +92,11 @@
                     <span id="display-grand-total" class="fw-bold" style="font-size:15px;color:var(--accent);">AED 0.00</span>
                 </div>
             </div>
+        </div>
+
+        <div class="surface-note mt-3">
+            <strong>Quotation flow</strong><br>
+            Start with the customer, confirm dates, add services, and review totals before sending or converting later to an order.
         </div>
     </div>
 
@@ -155,7 +173,7 @@
                 </div>
                 <div>
                     <label class="form-label">Terms & Conditions</label>
-                    <textarea name="terms" class="form-control" rows="4">{{ old('terms', $terms) }}</textarea>
+                    <textarea name="terms" class="form-control" rows="4">{{ old('terms') }}</textarea>
                 </div>
             </div>
         </div>

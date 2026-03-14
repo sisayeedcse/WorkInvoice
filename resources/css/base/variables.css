@@ -1,0 +1,144 @@
+:root {
+    --primary-50: #eef2ff;
+    --primary-100: #dfe6ff;
+    --primary-200: #c4d0ff;
+    --primary-300: #97adff;
+    --primary-400: #6d87fc;
+    --primary-500: #445cf2;
+    --primary-600: #2f43ce;
+    --primary-700: #1f2f87;
+    --primary-800: #1a275f;
+    --primary-900: #121a3f;
+
+    --accent-50: #fff7ec;
+    --accent-100: #ffe9cd;
+    --accent-200: #ffd39a;
+    --accent-300: #ffb25b;
+    --accent-400: #f08d22;
+    --accent-500: #db7b16;
+    --accent-600: #be6610;
+    --accent-700: #9a510e;
+    --accent-800: #7f4311;
+    --accent-900: #653711;
+
+    --success: #0f9d58;
+    --success-light: #def7ea;
+    --success-dark: #0b7a43;
+    --warning: #f59e0b;
+    --warning-light: #fff5d9;
+    --warning-dark: #c47b07;
+    --danger: #d94141;
+    --danger-light: #ffe5e5;
+    --danger-dark: #ac2d2d;
+    --info: #1984d6;
+    --info-light: #e4f1ff;
+    --info-dark: #1467a5;
+
+    --gray-50: #f8f9fc;
+    --gray-100: #edf0f5;
+    --gray-200: #dde2ea;
+    --gray-300: #c9d1dd;
+    --gray-400: #9ba7ba;
+    --gray-500: #6c798f;
+    --gray-600: #4f5c70;
+    --gray-700: #384255;
+    --gray-800: #252d3b;
+    --gray-900: #161c27;
+
+    --primary: #1f2f87;
+    --primary-light: #2f43ce;
+    --accent: #f08d22;
+    --accent-hover: #db7b16;
+    --muted: #6c798f;
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8f9fc;
+    --bg-tertiary: #edf0f5;
+    --bg-elevated: #ffffff;
+    --bg: #f4f6fb;
+    --card-bg: #ffffff;
+    --text-primary: #1f2430;
+    --text-secondary: #5d677a;
+    --text-tertiary: #8a95a8;
+    --text: #1f2430;
+    --border-primary: #dde2ea;
+    --border-secondary: #c9d1dd;
+    --border-light: #edf0f5;
+    --border: #dde2ea;
+
+    --text-xs: 0.6875rem;
+    --text-sm: 0.8125rem;
+    --text-base: 0.875rem;
+    --text-lg: 1rem;
+    --text-xl: 1.125rem;
+    --text-2xl: 1.375rem;
+    --text-3xl: 1.75rem;
+    --text-4xl: 2.25rem;
+    --text-5xl: 3rem;
+
+    --font-normal: 400;
+    --font-medium: 500;
+    --font-semibold: 600;
+    --font-bold: 700;
+    --font-extrabold: 800;
+
+    --leading-none: 1;
+    --leading-tight: 1.25;
+    --leading-snug: 1.375;
+    --leading-normal: 1.5;
+    --leading-relaxed: 1.625;
+    --leading-loose: 2;
+
+    --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-mono: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+
+    --space-0: 0;
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-5: 1.25rem;
+    --space-6: 1.5rem;
+    --space-7: 1.75rem;
+    --space-8: 2rem;
+    --space-10: 2.5rem;
+    --space-12: 3rem;
+    --space-14: 3.5rem;
+    --space-16: 4rem;
+    --space-20: 5rem;
+    --space-24: 6rem;
+
+    --radius-none: 0;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 20px;
+    --radius-2xl: 24px;
+    --radius-full: 9999px;
+
+    --shadow-xs: 0 1px 2px rgba(10, 20, 40, 0.06);
+    --shadow-sm: 0 2px 8px rgba(16, 24, 40, 0.08);
+    --shadow-md: 0 8px 24px rgba(16, 24, 40, 0.08);
+    --shadow-lg: 0 16px 40px rgba(16, 24, 40, 0.1);
+    --shadow-xl: 0 20px 50px rgba(16, 24, 40, 0.12);
+    --shadow-2xl: 0 30px 70px rgba(16, 24, 40, 0.16);
+    --shadow-inner: inset 0 2px 4px rgba(10, 20, 40, 0.06);
+
+    --z-dropdown: 1000;
+    --z-sticky: 1020;
+    --z-fixed: 1030;
+    --z-modal-backdrop: 1040;
+    --z-modal: 1050;
+    --z-popover: 1060;
+    --z-tooltip: 1070;
+
+    --sidebar-w: 272px;
+    --sidebar-collapsed-w: 72px;
+    --topbar-h: 68px;
+    --content-max-w: 1700px;
+
+    --breakpoint-sm: 640px;
+    --breakpoint-md: 768px;
+    --breakpoint-lg: 1024px;
+    --breakpoint-xl: 1280px;
+    --breakpoint-2xl: 1536px;
+}

@@ -3,30 +3,84 @@
 @section('page-title', 'Orders')
 
 @section('content')
-    <div class="page-header">
+    <div class="hero-panel mb-4">
         <div>
-            <h1>Orders</h1>
-            <p class="text-muted mb-0" style="font-size:13px;">Track all workshop orders and job statuses</p>
+            <div class="hero-kicker"><i class="bi bi-clipboard-check-fill"></i> Production Workload</div>
+            <h1 class="hero-title">Orders</h1>
+            <p class="hero-copy">Track approved jobs, delivery commitments, and workshop execution status from a more
+                readable production board.</p>
         </div>
-        <div class="d-flex gap-2">
+        <div class="hero-actions">
+            <a href="{{ route('orders.create') }}" class="btn btn-accent">
+                <i class="bi bi-plus-lg"></i> New Order
+            </a>
+        </div>
+    </div>
+
+    <div class="summary-grid">
+        <div class="summary-card">
+            <div class="summary-card-head">
+                <div class="summary-card-body">
+                    <div class="summary-label">Total Orders</div>
+                    <div class="summary-value">{{ $orders->count() }}</div>
+                </div>
+                <div class="summary-icon"><i class="bi bi-clipboard-data"></i></div>
+            </div>
+            <div class="summary-foot">Orders in the system</div>
+        </div>
+        <div class="summary-card">
+            <div class="summary-card-head">
+                <div class="summary-card-body">
+                    <div class="summary-label">Active Jobs</div>
+                    <div class="summary-value">
+                        {{ $orders->whereIn('status', ['pending', 'approved', 'in_progress'])->count() }}</div>
+                </div>
+                <div class="summary-icon summary-icon-info"><i class="bi bi-hammer"></i></div>
+            </div>
+            <div class="summary-foot">Awaiting or under production</div>
+        </div>
+        <div class="summary-card">
+            <div class="summary-card-head">
+                <div class="summary-card-body">
+                    <div class="summary-label">Completed</div>
+                    <div class="summary-value summary-success">
+                        {{ $orders->whereIn('status', ['completed', 'delivered'])->count() }}</div>
+                </div>
+                <div class="summary-icon summary-icon-success"><i class="bi bi-patch-check-fill"></i></div>
+            </div>
+            <div class="summary-foot">Finished or delivered orders</div>
+        </div>
+        <div class="summary-card">
+            <div class="summary-card-head">
+                <div class="summary-card-body">
+                    <div class="summary-label">Order Value</div>
+                    <div class="summary-value summary-accent">AED {{ number_format($orders->sum('grand_total'), 0) }}</div>
+                </div>
+                <div class="summary-icon summary-icon-accent"><i class="bi bi-cash-coin"></i></div>
+            </div>
+            <div class="summary-foot">Combined value of current list</div>
+        </div>
+    </div>
+
+    <div class="toolbar-card">
+        <div class="toolbar-copy">Filter order status and manage workshop workload from one responsive table.</div>
+        <div class="toolbar-actions">
             <form method="GET" class="d-flex gap-2">
                 <select name="status" class="form-select form-select-sm" style="width:auto;" onchange="this.form.submit()">
                     <option value="">All Status</option>
                     @foreach(['pending', 'approved', 'in_progress', 'completed', 'delivered', 'cancelled'] as $s)
                         <option value="{{ $s }}" {{ request('status') == $s ? 'selected' : '' }}>
-                            {{ ucfirst(str_replace('_', ' ', $s)) }}</option>
+                            {{ ucfirst(str_replace('_', ' ', $s)) }}
+                        </option>
                     @endforeach
                 </select>
                 @if(request('status'))<a href="{{ route('orders.index') }}"
                 class="btn btn-sm btn-outline-secondary">Clear</a>@endif
             </form>
-            <a href="{{ route('orders.create') }}" class="btn btn-accent">
-                <i class="bi bi-plus-lg me-1"></i> New Order
-            </a>
         </div>
     </div>
 
-    <div class="card">
+    <div class="table-card">
         <div class="table-responsive">
             <table id="ordersTable" class="table mb-0" style="width:100%;">
                 <thead>
@@ -66,9 +120,9 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" class="text-center py-5 text-muted">
-                                <i class="bi bi-clipboard-x fs-1 d-block mb-2 opacity-25"></i>
-                                No orders yet.
+                            <td colspan="7" class="empty-state">
+                                <div class="empty-state-icon"><i class="bi bi-clipboard-x"></i></div>
+                                <div class="empty-state-copy">No orders yet.</div>
                             </td>
                         </tr>
                     @endforelse

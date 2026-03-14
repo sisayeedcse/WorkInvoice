@@ -3,10 +3,55 @@
 @section('page-title', 'Settings')
 
 @section('content')
-    <div class="page-header">
+    <div class="hero-panel mb-4">
         <div>
-            <h1>Settings</h1>
-            <p class="text-muted mb-0" style="font-size:13px;">Manage company information and system preferences</p>
+            <div class="hero-kicker"><i class="bi bi-gear-fill"></i> Workspace Configuration</div>
+            <h1 class="hero-title">Settings</h1>
+            <p class="hero-copy">Control company identity, document defaults, currency, and the information displayed across
+                generated documents.</p>
+        </div>
+    </div>
+
+    <div class="summary-grid">
+        <div class="summary-card">
+            <div class="summary-card-head">
+                <div class="summary-card-body">
+                    <div class="summary-label">Company Name</div>
+                    <div class="summary-value summary-value-compact">{{ $company['name'] ?: 'Not set' }}</div>
+                </div>
+                <div class="summary-icon"><i class="bi bi-building"></i></div>
+            </div>
+            <div class="summary-foot">Primary document branding</div>
+        </div>
+        <div class="summary-card">
+            <div class="summary-card-head">
+                <div class="summary-card-body">
+                    <div class="summary-label">Currency</div>
+                    <div class="summary-value">{{ $company['currency'] ?: 'AED' }}</div>
+                </div>
+                <div class="summary-icon summary-icon-accent"><i class="bi bi-currency-dollar"></i></div>
+            </div>
+            <div class="summary-foot">Default monetary code</div>
+        </div>
+        <div class="summary-card">
+            <div class="summary-card-head">
+                <div class="summary-card-body">
+                    <div class="summary-label">Symbol</div>
+                    <div class="summary-value">{{ $company['currency_symbol'] ?: 'AED' }}</div>
+                </div>
+                <div class="summary-icon summary-icon-info"><i class="bi bi-type-bold"></i></div>
+            </div>
+            <div class="summary-foot">Displayed document symbol</div>
+        </div>
+        <div class="summary-card">
+            <div class="summary-card-head">
+                <div class="summary-card-body">
+                    <div class="summary-label">Contact</div>
+                    <div class="summary-value summary-value-compact">{{ $company['phone'] ?: 'Not set' }}</div>
+                </div>
+                <div class="summary-icon summary-icon-success"><i class="bi bi-telephone-fill"></i></div>
+            </div>
+            <div class="summary-foot">Primary business phone</div>
         </div>
     </div>
 
@@ -23,7 +68,7 @@
                     <div class="card-body">
                         @if($company['logo'])
                             <div class="mb-3 d-flex align-items-center gap-3">
-                                <img src="{{ Storage::disk('public')->url($company['logo']) }}" alt="Company Logo"
+                                <img src="{{ Storage::url($company['logo']) }}" alt="Company Logo"
                                     style="height:64px;max-width:220px;object-fit:contain;border:1px solid var(--border);border-radius:8px;padding:6px;background:#f8fafc;">
                                 <div>
                                     <div style="font-size:13px;font-weight:600;color:var(--text);">Current logo</div>
@@ -125,14 +170,14 @@
 
         <div class="col-12 col-lg-4">
             <!-- Company Preview Card -->
-            <div class="card mb-3 sticky-top" style="top:80px;">
+            <div class="card mb-3 sticky-top" style="top:90px;">
                 <div class="card-header"><i class="bi bi-eye me-2" style="color:var(--accent);"></i>Document Header Preview
                 </div>
                 <div class="card-body" style="background:#f8fafc;border-radius:0 0 12px 12px;">
                     <div style="border:1px solid var(--border);border-radius:10px;padding:16px;background:#fff;">
                         <div style="display:flex;align-items:center;gap:14px;margin-bottom:12px;">
                             @if($company['logo'])
-                                <img src="{{ Storage::disk('public')->url($company['logo']) }}" alt="Logo"
+                                <img src="{{ Storage::url($company['logo']) }}" alt="Logo"
                                     style="height:48px;max-width:160px;object-fit:contain;">
                             @else
                                 <div

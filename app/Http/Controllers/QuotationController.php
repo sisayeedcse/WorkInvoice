@@ -39,16 +39,20 @@ class QuotationController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'quotation_number'      => 'nullable|string|max:255|unique:quotations,quotation_number',
             'customer_id'           => 'required|exists:customers,id',
             'date'                  => 'required|date',
             'valid_until'           => 'nullable|date',
+            'prepared_by'           => 'nullable|string|max:255',
             'items'                 => 'required|array|min:1',
             'items.*.item_name'     => 'required|string',
             'items.*.quantity'      => 'required|numeric|min:0.01',
             'items.*.unit_price'    => 'required|numeric|min:0',
         ]);
 
-        DB::transaction(function () use ($request) {
+        $quotationNumber = trim((string) $request->input('quotation_number', ''));
+
+        DB::transaction(function () use ($request, $quotationNumber) {
             $itemsData = $request->items;
             $subtotal  = collect($itemsData)->sum(fn($i) => $i['quantity'] * $i['unit_price']);
             $discount  = (float) $request->discount ?? 0;
@@ -56,7 +60,7 @@ class QuotationController extends Controller
             $grandTotal = $subtotal - $discount + ($subtotal * $tax / 100);
 
             $quotation = Quotation::create([
-                'quotation_number' => Quotation::generateNumber(),
+                'quotation_number' => $quotationNumber !== '' ? $quotationNumber : Quotation::generateNumber(),
                 'customer_id'      => $request->customer_id,
                 'date'             => $request->date,
                 'valid_until'      => $request->valid_until,
@@ -67,6 +71,7 @@ class QuotationController extends Controller
                 'notes'            => $request->notes,
                 'terms'            => $request->terms,
                 'status'           => 'draft',
+                'prepared_by'      => $request->prepared_by,
                 'created_by'       => auth()->id(),
             ]);
 
@@ -108,6 +113,7 @@ class QuotationController extends Controller
         $request->validate([
             'customer_id'           => 'required|exists:customers,id',
             'date'                  => 'required|date',
+            'prepared_by'           => 'nullable|string|max:255',
             'items'                 => 'required|array|min:1',
             'items.*.item_name'     => 'required|string',
             'items.*.quantity'      => 'required|numeric|min:0.01',
@@ -132,6 +138,7 @@ class QuotationController extends Controller
                 'notes'       => $request->notes,
                 'terms'       => $request->terms,
                 'status'      => $request->status ?? $quotation->status,
+                'prepared_by' => $request->prepared_by,
             ]);
 
             $quotation->items()->delete();
@@ -174,7 +181,7 @@ class QuotationController extends Controller
         }
         $logoPath = \App\Models\Setting::get('company_logo');
         $company['logo_base64'] = null;
-        if ($logoPath && \Illuminate\Support\Facades\Storage::disk('public')->exists($logoPath)) {
+        if (extension_loaded('gd') && $logoPath && \Illuminate\Support\Facades\Storage::disk('public')->exists($logoPath)) {
             $file = \Illuminate\Support\Facades\Storage::disk('public')->get($logoPath);
             $mime = mime_content_type(\Illuminate\Support\Facades\Storage::disk('public')->path($logoPath));
             $company['logo_base64'] = 'data:' . $mime . ';base64,' . base64_encode($file);

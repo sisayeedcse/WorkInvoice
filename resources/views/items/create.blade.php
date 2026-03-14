@@ -5,16 +5,24 @@
 @section('content')
 <div class="page-header">
     <div>
-        <nav aria-label="breadcrumb"><ol class="breadcrumb mb-1" style="font-size:12px;">
+        <nav aria-label="breadcrumb"><ol class="breadcrumb mb-1">
             <li class="breadcrumb-item"><a href="{{ route('items.index') }}">Services</a></li>
             <li class="breadcrumb-item active">New Service</li>
         </ol></nav>
         <h1>Add New Service</h1>
+        <p class="text-muted mb-0" style="font-size:13px;">Build a reusable pricing entry for faster document creation.</p>
     </div>
 </div>
 
-<div class="row justify-content-center">
-    <div class="col-12 col-lg-7">
+<div class="form-shell">
+    <aside class="form-sidebar">
+        <div class="surface-note">
+            <strong>Library quality matters</strong><br>
+            Clear names, realistic default prices, and sensible categories improve quotation speed and reduce pricing mistakes.
+        </div>
+    </aside>
+
+    <div class="form-main">
         <div class="card">
             <div class="card-header"><i class="bi bi-tools me-2" style="color:var(--accent);"></i>Service Details</div>
             <div class="card-body">

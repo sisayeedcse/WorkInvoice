@@ -3,17 +3,74 @@
 @section('page-title', 'Customers')
 
 @section('content')
-    <div class="page-header">
+    <div class="hero-panel mb-4">
         <div>
-            <h1>Customers</h1>
-            <p class="text-muted mb-0" style="font-size:13px;">Manage your customer database</p>
+            <div class="hero-kicker"><i class="bi bi-people-fill"></i> Client Directory</div>
+            <h1 class="hero-title">Customers</h1>
+            <p class="hero-copy">Keep contact details, companies, quotations, and orders connected in one structured
+                customer workspace.</p>
         </div>
-        <a href="{{ route('customers.create') }}" class="btn btn-accent">
-            <i class="bi bi-plus-lg me-1"></i> Add Customer
-        </a>
+        <div class="hero-actions">
+            <a href="{{ route('customers.create') }}" class="btn btn-accent">
+                <i class="bi bi-plus-lg"></i> Add Customer
+            </a>
+        </div>
     </div>
 
-    <div class="card">
+    <div class="summary-grid">
+        <div class="summary-card">
+            <div class="summary-card-head">
+                <div class="summary-card-body">
+                    <div class="summary-label">Total Customers</div>
+                    <div class="summary-value">{{ $customers->count() }}</div>
+                </div>
+                <div class="summary-icon"><i class="bi bi-people-fill"></i></div>
+            </div>
+            <div class="summary-foot">Registered customer records</div>
+        </div>
+        <div class="summary-card">
+            <div class="summary-card-head">
+                <div class="summary-card-body">
+                    <div class="summary-label">Companies</div>
+                    <div class="summary-value">
+                        {{ $customers->filter(fn($customer) => filled($customer->company_name))->count() }}</div>
+                </div>
+                <div class="summary-icon summary-icon-info"><i class="bi bi-buildings-fill"></i></div>
+            </div>
+            <div class="summary-foot">Customers linked to business names</div>
+        </div>
+        <div class="summary-card">
+            <div class="summary-card-head">
+                <div class="summary-card-body">
+                    <div class="summary-label">Quotation Activity</div>
+                    <div class="summary-value">{{ $customers->sum('quotations_count') }}</div>
+                </div>
+                <div class="summary-icon summary-icon-accent"><i class="bi bi-file-earmark-text-fill"></i></div>
+            </div>
+            <div class="summary-foot">Total quotations across accounts</div>
+        </div>
+        <div class="summary-card">
+            <div class="summary-card-head">
+                <div class="summary-card-body">
+                    <div class="summary-label">Order Activity</div>
+                    <div class="summary-value">{{ $customers->sum('orders_count') }}</div>
+                </div>
+                <div class="summary-icon summary-icon-success"><i class="bi bi-clipboard-check-fill"></i></div>
+            </div>
+            <div class="summary-foot">Total orders linked to customers</div>
+        </div>
+    </div>
+
+    <div class="toolbar-card">
+        <div class="toolbar-copy">Search, review, and maintain customer records from a single responsive table.</div>
+        <div class="toolbar-actions">
+            <a href="{{ route('customers.create') }}" class="btn btn-sm btn-accent">
+                <i class="bi bi-plus-lg"></i> New Customer
+            </a>
+        </div>
+    </div>
+
+    <div class="table-card">
         <div class="table-responsive">
             <table id="customersTable" class="table mb-0" style="width:100%;">
                 <thead>
@@ -58,9 +115,10 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="8" class="text-center py-5 text-muted">
-                                <i class="bi bi-people fs-1 d-block mb-2 opacity-25"></i>
-                                No customers found. <a href="{{ route('customers.create') }}">Add your first customer.</a>
+                            <td colspan="8" class="empty-state">
+                                <div class="empty-state-icon"><i class="bi bi-people"></i></div>
+                                <div class="empty-state-copy">No customers found. <a href="{{ route('customers.create') }}">Add
+                                        your first customer.</a></div>
                             </td>
                         </tr>
                     @endforelse

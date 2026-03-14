@@ -1,0 +1,105 @@
+/**
+ * Dashboard Page
+ * Specific styles for the dashboard page
+ */
+
+/* Dashboard page header with welcome message */
+.dashboard-header {
+    margin-bottom: 24px;
+}
+
+.dashboard-header h1 {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: var(--text-primary);
+}
+
+.dashboard-header p {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+/* Dashboard stat cards grid */
+.dashboard-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+/* Dashboard charts section */
+.dashboard-charts {
+    margin-bottom: 24px;
+}
+
+.dashboard-chart-card {
+    height: 100%;
+}
+
+.dashboard-chart-card canvas {
+    max-height: 300px;
+}
+
+/* Recent activity tables */
+.dashboard-recent-tables {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+/* Chart card header with badge */
+.chart-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.chart-header .badge {
+    font-size: 9px;
+    padding: 4px 8px;
+}
+
+/* Empty state for dashboard */
+.dashboard-empty {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.dashboard-empty-icon {
+    font-size: 48px;
+    color: var(--gray-400);
+    margin-bottom: 16px;
+}
+
+.dashboard-empty h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.dashboard-empty p {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+}
+
+/* Mobile responsive */
+@media (max-width: 767px) {
+    .dashboard-stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .dashboard-recent-tables {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .dashboard-chart-card canvas {
+        max-height: 220px;
+    }
+}

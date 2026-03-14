@@ -1,0 +1,73 @@
+/**
+ * Main Content Area
+ * Layout and spacing for the main application content
+ */
+
+#main {
+    margin-left: var(--sidebar-w);
+    margin-top: var(--topbar-h);
+    padding: 24px 24px 28px;
+    min-height: calc(100vh - var(--topbar-h));
+    max-width: var(--content-max-w);
+}
+
+.page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 12px;
+    background: #ffffff;
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-lg);
+    padding: 18px 20px;
+    box-shadow: var(--shadow-sm);
+}
+
+.page-header h1 {
+    font-size: 20px;
+    font-weight: 800;
+    margin: 0;
+    color: var(--gray-800);
+}
+
+.page-header p {
+    margin: 0;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+@media (max-width: 767px) {
+    #main {
+        margin-left: 0;
+        padding: 16px 14px 24px;
+    }
+
+    .page-header {
+        padding: 14px;
+        border-radius: var(--radius-md);
+    }
+
+    .page-header h1 {
+        font-size: 17px;
+    }
+
+    .page-header p {
+        font-size: 12px;
+    }
+}
+
+@media print {
+    #main {
+        margin-left: 0 !important;
+        margin-top: 0 !important;
+        padding-top: 16px !important;
+    }
+
+    .page-header .btn,
+    .page-header form,
+    .print-hide {
+        display: none !important;
+    }
+}

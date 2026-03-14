@@ -3,12 +3,65 @@
 @section('page-title', 'Invoices')
 
 @section('content')
-    <div class="page-header">
+    <div class="hero-panel mb-4">
         <div>
-            <h1>Invoices</h1>
-            <p class="text-muted mb-0" style="font-size:13px;">Track customer invoices and payments</p>
+            <div class="hero-kicker"><i class="bi bi-receipt-cutoff"></i> Billing & Collections</div>
+            <h1 class="hero-title">Invoices</h1>
+            <p class="hero-copy">Monitor billing, payment collection, and outstanding balances with a more structured finance workspace.</p>
         </div>
-        <div class="d-flex gap-2">
+        <div class="hero-actions">
+            <a href="{{ route('invoices.create') }}" class="btn btn-accent">
+                <i class="bi bi-plus-lg"></i> New Invoice
+            </a>
+        </div>
+    </div>
+
+    <div class="summary-grid">
+        <div class="summary-card">
+            <div class="summary-card-head">
+                <div class="summary-card-body">
+                    <div class="summary-label">Total Invoices</div>
+                    <div class="summary-value">{{ $invoices->count() }}</div>
+                </div>
+                <div class="summary-icon"><i class="bi bi-receipt-cutoff"></i></div>
+            </div>
+            <div class="summary-foot">Billing documents in view</div>
+        </div>
+        <div class="summary-card">
+            <div class="summary-card-head">
+                <div class="summary-card-body">
+                    <div class="summary-label">Collected</div>
+                    <div class="summary-value summary-success">AED {{ number_format($invoices->sum('paid_amount'), 0) }}</div>
+                </div>
+                <div class="summary-icon summary-icon-success"><i class="bi bi-wallet2"></i></div>
+            </div>
+            <div class="summary-foot">Payments already recorded</div>
+        </div>
+        <div class="summary-card">
+            <div class="summary-card-head">
+                <div class="summary-card-body">
+                    <div class="summary-label">Balance Due</div>
+                    <div class="summary-value summary-danger">AED {{ number_format($invoices->sum('balance'), 0) }}</div>
+                </div>
+                <div class="summary-icon summary-icon-danger"><i class="bi bi-exclamation-diamond-fill"></i></div>
+            </div>
+            <div class="summary-foot">Open receivables still due</div>
+        </div>
+        <div class="summary-card">
+            <div class="summary-card-head">
+                <div class="summary-card-body">
+                    <div class="summary-label">Overdue</div>
+                    <div class="summary-value">{{ $invoices->where('status', 'overdue')->count() }}</div>
+                </div>
+                <div class="summary-icon summary-icon-info"><i class="bi bi-clock-history"></i></div>
+            </div>
+            <div class="summary-foot">Invoices marked overdue</div>
+        </div>
+    </div>
+
+    <div class="toolbar-card">
+        <div class="toolbar-copy">Filter invoice status and manage collection activity from a single responsive billing table.</div>
+        <div class="toolbar-actions">
             <form method="GET" class="d-flex gap-2">
                 <select name="status" class="form-select form-select-sm" style="width:auto;" onchange="this.form.submit()">
                     <option value="">All Status</option>
@@ -19,13 +72,10 @@
                 @if(request('status'))<a href="{{ route('invoices.index') }}"
                 class="btn btn-sm btn-outline-secondary">Clear</a>@endif
             </form>
-            <a href="{{ route('invoices.create') }}" class="btn btn-accent">
-                <i class="bi bi-plus-lg me-1"></i> New Invoice
-            </a>
         </div>
     </div>
 
-    <div class="card">
+    <div class="table-card">
         <div class="table-responsive">
             <table id="invoicesTable" class="table mb-0" style="width:100%;">
                 <thead>
@@ -66,9 +116,9 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="8" class="text-center py-5 text-muted">
-                                <i class="bi bi-receipt fs-1 d-block mb-2 opacity-25"></i>
-                                No invoices yet.
+                            <td colspan="8" class="empty-state">
+                                <div class="empty-state-icon"><i class="bi bi-receipt"></i></div>
+                                <div class="empty-state-copy">No invoices yet.</div>
                             </td>
                         </tr>
                     @endforelse

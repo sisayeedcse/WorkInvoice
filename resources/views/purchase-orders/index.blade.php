@@ -3,12 +3,68 @@
 @section('page-title', 'Purchase Orders')
 
 @section('content')
-    <div class="page-header">
+    <div class="hero-panel mb-4">
         <div>
-            <h1>Purchase Orders</h1>
-            <p class="text-muted mb-0" style="font-size:13px;">Manage supplier and subcontract purchase orders</p>
+            <div class="hero-kicker"><i class="bi bi-cart-fill"></i> Procurement</div>
+            <h1 class="hero-title">Purchase Orders</h1>
+            <p class="hero-copy">Control supplier commitments, materials purchasing, and subcontractor orders from a cleaner
+                procurement workspace.</p>
         </div>
-        <div class="d-flex gap-2">
+        <div class="hero-actions">
+            <a href="{{ route('purchase-orders.create') }}" class="btn btn-accent">
+                <i class="bi bi-plus-lg"></i> New PO
+            </a>
+        </div>
+    </div>
+
+    <div class="summary-grid">
+        <div class="summary-card">
+            <div class="summary-card-head">
+                <div class="summary-card-body">
+                    <div class="summary-label">Total Purchase Orders</div>
+                    <div class="summary-value">{{ $purchaseOrders->count() }}</div>
+                </div>
+                <div class="summary-icon"><i class="bi bi-cart-fill"></i></div>
+            </div>
+            <div class="summary-foot">POs in the current list</div>
+        </div>
+        <div class="summary-card">
+            <div class="summary-card-head">
+                <div class="summary-card-body">
+                    <div class="summary-label">Open Orders</div>
+                    <div class="summary-value">{{ $purchaseOrders->whereIn('status', ['draft', 'sent'])->count() }}</div>
+                </div>
+                <div class="summary-icon summary-icon-info"><i class="bi bi-truck"></i></div>
+            </div>
+            <div class="summary-foot">Still awaiting receipt or closure</div>
+        </div>
+        <div class="summary-card">
+            <div class="summary-card-head">
+                <div class="summary-card-body">
+                    <div class="summary-label">Received</div>
+                    <div class="summary-value summary-success">{{ $purchaseOrders->where('status', 'received')->count() }}
+                    </div>
+                </div>
+                <div class="summary-icon summary-icon-success"><i class="bi bi-box-seam-fill"></i></div>
+            </div>
+            <div class="summary-foot">Goods or work received</div>
+        </div>
+        <div class="summary-card">
+            <div class="summary-card-head">
+                <div class="summary-card-body">
+                    <div class="summary-label">Procurement Value</div>
+                    <div class="summary-value summary-accent">AED
+                        {{ number_format($purchaseOrders->sum('grand_total'), 0) }}</div>
+                </div>
+                <div class="summary-icon summary-icon-accent"><i class="bi bi-bag-check-fill"></i></div>
+            </div>
+            <div class="summary-foot">Combined PO total</div>
+        </div>
+    </div>
+
+    <div class="toolbar-card">
+        <div class="toolbar-copy">Filter supplier orders by status and manage purchasing commitments efficiently.</div>
+        <div class="toolbar-actions">
             <form method="GET" class="d-flex gap-2">
                 <select name="status" class="form-select form-select-sm" style="width:auto;" onchange="this.form.submit()">
                     <option value="">All Status</option>
@@ -19,13 +75,10 @@
                 @if(request('status'))<a href="{{ route('purchase-orders.index') }}"
                 class="btn btn-sm btn-outline-secondary">Clear</a>@endif
             </form>
-            <a href="{{ route('purchase-orders.create') }}" class="btn btn-accent">
-                <i class="bi bi-plus-lg me-1"></i> New PO
-            </a>
         </div>
     </div>
 
-    <div class="card">
+    <div class="table-card">
         <div class="table-responsive">
             <table id="poTable" class="table mb-0" style="width:100%;">
                 <thead>
@@ -61,9 +114,9 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="text-center py-5 text-muted">
-                                <i class="bi bi-cart-x fs-1 d-block mb-2 opacity-25"></i>
-                                No purchase orders yet.
+                            <td colspan="6" class="empty-state">
+                                <div class="empty-state-icon"><i class="bi bi-cart-x"></i></div>
+                                <div class="empty-state-copy">No purchase orders yet.</div>
                             </td>
                         </tr>
                     @endforelse

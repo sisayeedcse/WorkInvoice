@@ -4,18 +4,23 @@
 @section('page-title', 'Dashboard')
 
 @section('content')
-    <div class="page-header">
+    <div class="hero-panel mb-4">
         <div>
-            <h1>Dashboard</h1>
-            <p class="text-muted mb-0" style="font-size:13px;">Welcome back, {{ auth()->user()->name }}. Here's your
-                business overview.</p>
+            <div class="hero-kicker"><i class="bi bi-grid-1x2-fill"></i> Operations Overview</div>
+            <h1 class="hero-title">Dashboard</h1>
+            <p class="hero-copy">Welcome back, {{ auth()->user()->name }}. Review revenue, operational activity, and recent commercial documents from one clean workspace.</p>
+            <div class="highlight-strip mt-3">
+                <span class="highlight-chip"><i class="bi bi-cash-stack"></i>AED {{ number_format($totalRevenue, 0) }} revenue</span>
+                <span class="highlight-chip"><i class="bi bi-hourglass-split"></i>{{ number_format($pendingJobs) }} active jobs</span>
+                <span class="highlight-chip"><i class="bi bi-check-circle"></i>{{ number_format($completedJobs) }} completed</span>
+            </div>
         </div>
-        <div class="d-flex gap-2">
+        <div class="hero-actions">
             <a href="{{ route('quotations.create') }}" class="btn btn-accent">
-                <i class="bi bi-plus-lg me-1"></i> New Quotation
+                <i class="bi bi-plus-lg"></i> New Quotation
             </a>
-            <a href="{{ route('orders.create') }}" class="btn btn-primary">
-                <i class="bi bi-plus-lg me-1"></i> New Order
+            <a href="{{ route('orders.create') }}" class="btn btn-light">
+                <i class="bi bi-plus-lg"></i> New Order
             </a>
         </div>
     </div>
@@ -62,23 +67,23 @@
     <!-- Charts Row -->
     <div class="row g-3 mb-4">
         <div class="col-12 col-lg-8">
-            <div class="card h-100">
+            <div class="table-card h-100">
                 <div class="card-header d-flex align-items-center justify-content-between">
                     <span><i class="bi bi-graph-up me-2 text-accent" style="color:var(--accent);"></i>Monthly Revenue</span>
-                    <span class="badge bg-light text-muted">Last 6 Months</span>
+                    <span class="badge badge-secondary">Last 6 Months</span>
                 </div>
-                <div class="card-body">
-                    <canvas id="revenueChart" height="120"></canvas>
+                <div class="card-body" style="height:300px;">
+                    <canvas id="revenueChart"></canvas>
                 </div>
             </div>
         </div>
         <div class="col-12 col-lg-4">
-            <div class="card h-100">
+            <div class="table-card h-100">
                 <div class="card-header d-flex align-items-center justify-content-between">
                     <span><i class="bi bi-bar-chart me-2" style="color:var(--accent);"></i>Orders / Month</span>
                 </div>
-                <div class="card-body">
-                    <canvas id="ordersChart" height="190"></canvas>
+                <div class="card-body" style="height:300px;">
+                    <canvas id="ordersChart"></canvas>
                 </div>
             </div>
         </div>
@@ -87,11 +92,10 @@
     <!-- Recent Tables -->
     <div class="row g-3">
         <div class="col-12 col-lg-6">
-            <div class="card">
-                <div class="card-header d-flex align-items-center justify-content-between">
+            <div class="table-card">
+                <div class="table-card-header">
                     <span><i class="bi bi-file-earmark-text me-2" style="color:var(--accent);"></i>Recent Quotations</span>
-                    <a href="{{ route('quotations.index') }}" class="btn btn-sm btn-outline-secondary rounded-pill">View
-                        All</a>
+                    <a href="{{ route('quotations.index') }}" class="btn btn-sm btn-outline-secondary rounded-pill">View All</a>
                 </div>
                 <div class="table-responsive">
                     <table class="table mb-0">
@@ -124,8 +128,8 @@
         </div>
 
         <div class="col-12 col-lg-6">
-            <div class="card">
-                <div class="card-header d-flex align-items-center justify-content-between">
+            <div class="table-card">
+                <div class="table-card-header">
                     <span><i class="bi bi-clipboard-check me-2" style="color:var(--accent);"></i>Recent Orders</span>
                     <a href="{{ route('orders.index') }}" class="btn btn-sm btn-outline-secondary rounded-pill">View All</a>
                 </div>
@@ -167,9 +171,17 @@
         const labels = @json($monthlyLabels);
         const revenue = @json($monthlyRevenue);
         const orders = @json($ordersPerMonth);
+        const commonChartOptions = { responsive: true, maintainAspectRatio: false, animation: false };
+
+        function createChart(canvasId, config) {
+            const canvas = document.getElementById(canvasId);
+            const existingChart = Chart.getChart(canvas);
+            if (existingChart) existingChart.destroy();
+            return new Chart(canvas, config);
+        }
 
         // Revenue chart
-        new Chart(document.getElementById('revenueChart'), {
+        createChart('revenueChart', {
             type: 'bar',
             data: {
                 labels,
@@ -182,7 +194,7 @@
                 }]
             },
             options: {
-                responsive: true,
+                ...commonChartOptions,
                 plugins: { legend: { display: false } },
                 scales: {
                     x: { grid: { display: false }, ticks: { font: { size: 11 } } },
@@ -192,7 +204,7 @@
         });
 
         // Orders chart
-        new Chart(document.getElementById('ordersChart'), {
+        createChart('ordersChart', {
             type: 'line',
             data: {
                 labels,
@@ -209,7 +221,7 @@
                 }]
             },
             options: {
-                responsive: true,
+                ...commonChartOptions,
                 plugins: { legend: { display: false } },
                 scales: {
                     x: { grid: { display: false }, ticks: { font: { size: 11 } } },

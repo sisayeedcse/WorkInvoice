@@ -13,7 +13,7 @@ class Quotation extends Model
     protected $fillable = [
         'quotation_number', 'customer_id', 'date', 'valid_until',
         'subtotal', 'discount', 'tax', 'grand_total',
-        'notes', 'terms', 'status', 'created_by',
+        'notes', 'terms', 'status', 'prepared_by', 'created_by',
     ];
 
     protected $casts = [
@@ -27,9 +27,24 @@ class Quotation extends Model
 
     public static function generateNumber(): string
     {
-        $last = static::withTrashed()->orderByDesc('id')->first();
-        $next = $last ? ((int) substr($last->quotation_number, 2)) + 1 : 1;
-        return 'Q-' . str_pad($next, 5, '0', STR_PAD_LEFT);
+        $lastActive = static::query()->orderByDesc('id')->first();
+        $next = $lastActive ? ((int) substr($lastActive->quotation_number, 2)) + 1 : 1;
+
+        while (true) {
+            $number = 'Q-' . str_pad($next, 5, '0', STR_PAD_LEFT);
+
+            if (static::query()->where('quotation_number', $number)->exists()) {
+                $next++;
+                continue;
+            }
+
+            $trashed = static::onlyTrashed()->where('quotation_number', $number)->first();
+            if ($trashed) {
+                $trashed->forceDelete();
+            }
+
+            return $number;
+        }
     }
 
     public function customer()

@@ -3,12 +3,70 @@
 @section('page-title', 'Quotations')
 
 @section('content')
-    <div class="page-header">
+    <div class="hero-panel mb-4">
         <div>
-            <h1>Quotations</h1>
-            <p class="text-muted mb-0" style="font-size:13px;">Create and manage customer quotations</p>
+            <div class="hero-kicker"><i class="bi bi-file-earmark-text-fill"></i> Commercial Pipeline</div>
+            <h1 class="hero-title">Quotations</h1>
+            <p class="hero-copy">Prepare premium customer proposals, monitor quotation status, and convert approved work
+                into live orders quickly.</p>
         </div>
-        <div class="d-flex gap-2">
+        <div class="hero-actions">
+            <a href="{{ route('quotations.create') }}" class="btn btn-accent">
+                <i class="bi bi-plus-lg"></i> New Quotation
+            </a>
+        </div>
+    </div>
+
+    <div class="summary-grid">
+        <div class="summary-card">
+            <div class="summary-card-head">
+                <div class="summary-card-body">
+                    <div class="summary-label">Total Quotations</div>
+                    <div class="summary-value">{{ $quotations->count() }}</div>
+                </div>
+                <div class="summary-icon"><i class="bi bi-files"></i></div>
+            </div>
+            <div class="summary-foot">All quotation records</div>
+        </div>
+        <div class="summary-card">
+            <div class="summary-card-head">
+                <div class="summary-card-body">
+                    <div class="summary-label">Open Pipeline</div>
+                    <div class="summary-value">{{ $quotations->whereIn('status', ['draft', 'sent'])->count() }}</div>
+                </div>
+                <div class="summary-icon summary-icon-info"><i class="bi bi-hourglass-split"></i></div>
+            </div>
+            <div class="summary-foot">Draft and sent quotations</div>
+        </div>
+        <div class="summary-card">
+            <div class="summary-card-head">
+                <div class="summary-card-body">
+                    <div class="summary-label">Won</div>
+                    <div class="summary-value summary-success">
+                        {{ $quotations->whereIn('status', ['accepted', 'converted'])->count() }}
+                    </div>
+                </div>
+                <div class="summary-icon summary-icon-success"><i class="bi bi-check2-circle"></i></div>
+            </div>
+            <div class="summary-foot">Accepted or converted quotations</div>
+        </div>
+        <div class="summary-card">
+            <div class="summary-card-head">
+                <div class="summary-card-body">
+                    <div class="summary-label">Quoted Value</div>
+                    <div class="summary-value summary-accent">AED {{ number_format($quotations->sum('grand_total'), 0) }}
+                    </div>
+                </div>
+                <div class="summary-icon summary-icon-accent"><i class="bi bi-currency-exchange"></i></div>
+            </div>
+            <div class="summary-foot">Combined quotation total</div>
+        </div>
+    </div>
+
+    <div class="toolbar-card">
+        <div class="toolbar-copy">Filter by quotation status and review the latest commercial activity in one responsive
+            list.</div>
+        <div class="toolbar-actions">
             <form method="GET" class="d-flex gap-2">
                 <select name="status" class="form-select form-select-sm" style="width:auto;" onchange="this.form.submit()">
                     <option value="">All Status</option>
@@ -19,13 +77,10 @@
                 @if(request('status'))<a href="{{ route('quotations.index') }}"
                 class="btn btn-sm btn-outline-secondary">Clear</a>@endif
             </form>
-            <a href="{{ route('quotations.create') }}" class="btn btn-accent">
-                <i class="bi bi-plus-lg me-1"></i> New Quotation
-            </a>
         </div>
     </div>
 
-    <div class="card">
+    <div class="table-card">
         <div class="table-responsive">
             <table id="quotationsTable" class="table mb-0" style="width:100%;">
                 <thead>
@@ -33,6 +88,7 @@
                         <th>Number</th>
                         <th>Date</th>
                         <th>Customer</th>
+                        <th>Prepared By</th>
                         <th>Items</th>
                         <th>Total</th>
                         <th>Status</th>
@@ -46,6 +102,7 @@
                                     class="doc-number text-decoration-none">{{ $quotation->quotation_number }}</a></td>
                             <td class="text-muted">{{ $quotation->date->format('d M Y') }}</td>
                             <td class="fw-medium">{{ $quotation->customer->name ?? '—' }}</td>
+                            <td class="text-muted">{{ $quotation->prepared_by ?: '—' }}</td>
                             <td class="text-muted">{{ $quotation->items()->count() }}</td>
                             <td class="fw-semibold">AED {{ number_format($quotation->grand_total, 2) }}</td>
                             <td>{!! $quotation->status_badge !!}</td>
@@ -76,9 +133,10 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" class="text-center py-5 text-muted">
-                                <i class="bi bi-file-earmark-text fs-1 d-block mb-2 opacity-25"></i>
-                                No quotations yet. <a href="{{ route('quotations.create') }}">Create your first quotation.</a>
+                            <td colspan="8" class="empty-state">
+                                <div class="empty-state-icon"><i class="bi bi-file-earmark-text"></i></div>
+                                <div class="empty-state-copy">No quotations yet. <a
+                                        href="{{ route('quotations.create') }}">Create your first quotation.</a></div>
                             </td>
                         </tr>
                     @endforelse

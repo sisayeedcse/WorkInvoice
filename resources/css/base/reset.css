@@ -1,0 +1,193 @@
+/**
+ * Reset & Base Styles
+ * Modern normalization and base element styling
+ */
+
+/* Box sizing */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+/* Remove default margins and padding */
+* {
+    margin: 0;
+    padding: 0;
+}
+
+/* Root element */
+html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    scroll-behavior: auto;
+}
+
+/* Body */
+body {
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    font-weight: var(--font-normal);
+    line-height: var(--leading-normal);
+    color: var(--text-primary);
+    background: radial-gradient(circle at top right, #ffffff 0%, #f4f6fb 55%, #eef2f8 100%);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+*,
+*::before,
+*::after {
+    animation: none !important;
+    transition: none !important;
+}
+
+/* Headings */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: var(--font-bold);
+    line-height: var(--leading-tight);
+    color: var(--text-primary);
+}
+
+/* Links */
+a {
+    color: var(--primary-600);
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--primary-700);
+}
+
+/* Lists */
+ul,
+ol {
+    list-style: none;
+}
+
+/* Images */
+img,
+picture,
+video,
+svg {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+canvas {
+    display: block;
+}
+
+/* Form elements */
+input,
+button,
+textarea,
+select {
+    font: inherit;
+    color: inherit;
+}
+
+/* Remove button styling */
+button {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+/* Prevent text overflow */
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    overflow-wrap: break-word;
+}
+
+/* Selection */
+::selection {
+    background: var(--accent-200);
+    color: var(--primary-900);
+}
+
+::-moz-selection {
+    background: var(--accent-200);
+    color: var(--primary-900);
+}
+
+/* Focus visible (accessibility) */
+:focus-visible {
+    outline: 2px solid var(--accent-400);
+    outline-offset: 2px;
+}
+
+/* Disabled elements */
+:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* Scrollbar styling (webkit browsers) */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--gray-100);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--gray-300);
+    border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--gray-400);
+}
+
+/* Print styles */
+@media print {
+
+    *,
+    *::before,
+    *::after {
+        background: transparent !important;
+        color: #000 !important;
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+
+    a,
+    a:visited {
+        text-decoration: underline;
+    }
+
+    a[href]::after {
+        content: " (" attr(href) ")";
+    }
+
+    img {
+        page-break-inside: avoid;
+    }
+
+    p,
+    h2,
+    h3 {
+        orphans: 3;
+        widows: 3;
+    }
+
+    h2,
+    h3 {
+        page-break-after: avoid;
+    }
+}

@@ -3,17 +3,63 @@
 @section('page-title', 'Services & Items')
 
 @section('content')
-    <div class="page-header">
+    <div class="hero-panel mb-4">
         <div>
-            <h1>Services & Items Library</h1>
-            <p class="text-muted mb-0" style="font-size:13px;">Manage your frequently used services for quick selection</p>
+            <div class="hero-kicker"><i class="bi bi-tools"></i> Service Library</div>
+            <h1 class="hero-title">Services & Items</h1>
+            <p class="hero-copy">Maintain a clean pricing library for faster quotations, orders, and invoices with consistent service definitions.</p>
         </div>
-        <a href="{{ route('items.create') }}" class="btn btn-accent">
-            <i class="bi bi-plus-lg me-1"></i> Add Service
-        </a>
+        <div class="hero-actions">
+            <a href="{{ route('items.create') }}" class="btn btn-accent">
+                <i class="bi bi-plus-lg"></i> Add Service
+            </a>
+        </div>
     </div>
 
-    <div class="card">
+    <div class="summary-grid">
+        <div class="summary-card">
+            <div class="summary-card-head">
+                <div class="summary-card-body">
+                    <div class="summary-label">Total Services</div>
+                    <div class="summary-value">{{ $items->count() }}</div>
+                </div>
+                <div class="summary-icon"><i class="bi bi-tools"></i></div>
+            </div>
+            <div class="summary-foot">Items in the pricing library</div>
+        </div>
+        <div class="summary-card">
+            <div class="summary-card-head">
+                <div class="summary-card-body">
+                    <div class="summary-label">Categories</div>
+                    <div class="summary-value">{{ $items->pluck('category')->filter()->unique()->count() }}</div>
+                </div>
+                <div class="summary-icon summary-icon-info"><i class="bi bi-grid-3x3-gap-fill"></i></div>
+            </div>
+            <div class="summary-foot">Distinct classification groups</div>
+        </div>
+        <div class="summary-card">
+            <div class="summary-card-head">
+                <div class="summary-card-body">
+                    <div class="summary-label">Average Price</div>
+                    <div class="summary-value summary-accent">AED {{ number_format($items->avg('default_price') ?? 0, 0) }}</div>
+                </div>
+                <div class="summary-icon summary-icon-accent"><i class="bi bi-cash-stack"></i></div>
+            </div>
+            <div class="summary-foot">Default pricing benchmark</div>
+        </div>
+        <div class="summary-card">
+            <div class="summary-card-head">
+                <div class="summary-card-body">
+                    <div class="summary-label">Units Used</div>
+                    <div class="summary-value">{{ $items->pluck('unit')->filter()->unique()->count() }}</div>
+                </div>
+                <div class="summary-icon summary-icon-success"><i class="bi bi-rulers"></i></div>
+            </div>
+            <div class="summary-foot">Measurement types in use</div>
+        </div>
+    </div>
+
+    <div class="table-card">
         <div class="table-responsive">
             <table id="itemsTable" class="table mb-0" style="width:100%;">
                 <thead>
@@ -52,9 +98,9 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" class="text-center py-5 text-muted">
-                                <i class="bi bi-tools fs-1 d-block mb-2 opacity-25"></i>
-                                No services yet. <a href="{{ route('items.create') }}">Add your first service.</a>
+                            <td colspan="7" class="empty-state">
+                                <div class="empty-state-icon"><i class="bi bi-tools"></i></div>
+                                <div class="empty-state-copy">No services yet. <a href="{{ route('items.create') }}">Add your first service.</a></div>
                             </td>
                         </tr>
                     @endforelse

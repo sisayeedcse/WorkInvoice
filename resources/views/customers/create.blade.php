@@ -5,16 +5,31 @@
 @section('content')
 <div class="page-header">
     <div>
-        <nav aria-label="breadcrumb"><ol class="breadcrumb mb-1" style="font-size:12px;">
-            <li class="breadcrumb-item"><a href="{{ route('customers.index') }}">Customers</a></li>
-            <li class="breadcrumb-item active">New Customer</li>
-        </ol></nav>
+        <nav aria-label="breadcrumb"><ol class="breadcrumb mb-1"><li class="breadcrumb-item"><a href="{{ route('customers.index') }}">Customers</a></li><li class="breadcrumb-item active">New Customer</li></ol></nav>
         <h1>Add New Customer</h1>
+        <p class="text-muted mb-0" style="font-size:13px;">Create a complete customer profile for faster quotations, orders, and billing.</p>
     </div>
 </div>
 
-<div class="row justify-content-center">
-    <div class="col-12 col-lg-8">
+<div class="form-shell">
+    <aside class="form-sidebar">
+        <div class="surface-note">
+            <strong>Best practice</strong><br>
+            Capture the core contact details now so the customer can be selected instantly in quotations, orders, and invoices.
+        </div>
+        <div class="summary-card">
+            <div class="summary-card-head">
+                <div class="summary-card-body">
+                    <div class="summary-label">What to include</div>
+                    <div class="summary-value summary-value-compact">Core contact details</div>
+                </div>
+                <div class="summary-icon"><i class="bi bi-list-check"></i></div>
+            </div>
+            <div class="summary-foot">Name, company, phone, and address help your team identify the right customer quickly on every device.</div>
+        </div>
+    </aside>
+
+    <div class="form-main">
         <div class="card">
             <div class="card-header"><i class="bi bi-person-plus me-2" style="color:var(--accent);"></i>Customer Information</div>
             <div class="card-body">
