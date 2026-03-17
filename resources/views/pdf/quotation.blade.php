@@ -12,159 +12,267 @@
 
         body {
             font-family: DejaVu Sans, Arial, sans-serif;
-            color: #001b44;
+            color: #1f2937;
             font-size: 9pt;
+            background: #ffffff;
         }
 
         .page {
-            padding: 26px 26px 34px;
+            padding: 24px 28px 26px;
         }
 
-        .top-table {
+        .header {
             width: 100%;
             border-collapse: collapse;
+            margin-bottom: 18px;
         }
 
-        .top-table td {
+        .header td {
             vertical-align: top;
         }
 
-        .logo-cell {
-            width: 16%;
+        .brand {
+            width: 62%;
+            padding-right: 16px;
         }
 
-        .company-cell {
-            width: 58%;
-            text-align: center;
-        }
-
-        .title-cell {
-            width: 26%;
+        .document {
+            width: 38%;
             text-align: right;
         }
 
         .logo {
-            max-width: 70px;
-            max-height: 70px;
+            display: block;
+            max-width: 180px;
+            max-height: 58px;
             object-fit: contain;
+            margin-bottom: 10px;
         }
 
         .company-name {
-            font-size: 17pt;
+            font-size: 18pt;
             font-weight: bold;
-            line-height: 1.2;
+            color: #0f172a;
+            letter-spacing: 0.2px;
         }
 
-        .owner-name {
-            font-size: 11pt;
-            margin-top: 2px;
+        .company-tagline {
+            margin-top: 3px;
+            font-size: 8pt;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: #b45309;
         }
 
         .company-meta {
-            font-size: 8.7pt;
-            line-height: 1.35;
+            margin-top: 9px;
+            font-size: 8.2pt;
+            line-height: 1.6;
+            color: #475569;
         }
 
-        .title {
-            font-size: 15pt;
+        .doc-card {
+            border: 1px solid #d6dce5;
+            background: #f8fafc;
+            padding: 14px 16px;
+        }
+
+        .doc-kicker {
+            font-size: 7.6pt;
+            text-transform: uppercase;
+            letter-spacing: 1.6px;
+            color: #64748b;
+        }
+
+        .doc-title {
+            margin-top: 4px;
+            font-size: 17pt;
             font-weight: bold;
-            margin-top: 24px;
+            color: #0f172a;
+            letter-spacing: 0.8px;
         }
 
-        .divider {
-            border-top: 1px solid #a8afb9;
-            margin: 20px 0 14px;
+        .doc-number {
+            margin-top: 8px;
+            font-size: 10.8pt;
+            font-weight: bold;
+            color: #b45309;
+        }
+
+        .doc-status {
+            margin-top: 10px;
+            display: inline-block;
+            padding: 4px 10px;
+            border: 1px solid #fed7aa;
+            background: #fff7ed;
+            color: #9a3412;
+            font-size: 7.4pt;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.9px;
+        }
+
+        .hero-strip {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 16px;
+            border-top: 2px solid #0f172a;
+            border-bottom: 1px solid #d6dce5;
+        }
+
+        .hero-strip td {
+            padding: 10px 0;
+            vertical-align: middle;
+        }
+
+        .hero-copy {
+            font-size: 8.6pt;
+            color: #475569;
+            line-height: 1.55;
+        }
+
+        .hero-highlight {
+            text-align: right;
+            font-size: 8.3pt;
+            color: #64748b;
+        }
+
+        .hero-highlight strong {
+            display: block;
+            margin-top: 2px;
+            font-size: 12pt;
+            color: #0f172a;
+        }
+
+        .info-grid {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-bottom: 16px;
+        }
+
+        .info-grid td {
+            vertical-align: top;
+        }
+
+        .party-cell {
+            width: 52%;
+            padding-right: 12px;
+        }
+
+        .meta-cell {
+            width: 48%;
+        }
+
+        .panel {
+            border: 1px solid #d6dce5;
+            background: #ffffff;
+            padding: 12px 14px;
+            min-height: 118px;
+        }
+
+        .panel-title {
+            margin-bottom: 7px;
+            font-size: 7.6pt;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: #64748b;
+        }
+
+        .party-name {
+            font-size: 10.6pt;
+            font-weight: bold;
+            color: #0f172a;
+            line-height: 1.45;
+        }
+
+        .party-meta {
+            margin-top: 5px;
+            font-size: 8.2pt;
+            line-height: 1.6;
+            color: #475569;
         }
 
         .meta-table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 20px;
         }
 
         .meta-table td {
-            vertical-align: top;
+            padding: 4px 0;
+            font-size: 8.2pt;
+            border-bottom: 1px solid #eef2f7;
         }
 
-        .to-cell {
-            width: 58%;
+        .meta-table tr:last-child td {
+            border-bottom: none;
         }
 
-        .ref-cell {
-            width: 42%;
+        .meta-key {
+            width: 44%;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 7.2pt;
         }
 
-        .to-label {
-            font-size: 12pt;
-            font-weight: bold;
-        }
-
-        .to-name {
-            font-size: 11pt;
-            font-weight: bold;
-            line-height: 1.35;
-        }
-
-        .ref-inner {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .ref-inner td {
-            font-size: 11pt;
-            padding: 1px 0;
-        }
-
-        .ref-key {
-            width: 58%;
+        .meta-value {
+            width: 56%;
             text-align: right;
+            color: #0f172a;
             font-weight: bold;
-            padding-right: 12px;
         }
 
-        .ref-val {
-            width: 42%;
-            text-align: right;
-        }
-
-        .paragraph {
-            font-size: 9.3pt;
-            line-height: 1.5;
-            margin-bottom: 12px;
+        .intro {
+            margin-bottom: 14px;
+            padding: 11px 12px;
+            border-left: 3px solid #f59e0b;
+            background: #fffbeb;
+            font-size: 8.5pt;
+            line-height: 1.65;
+            color: #4b5563;
         }
 
         .items-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 10px;
         }
 
         .items-table thead th {
-            background: #eef1f4;
-            border-top: 1px solid #a8afb9;
-            border-bottom: 1px solid #a8afb9;
-            padding: 7px 10px;
-            font-size: 10pt;
-            font-weight: bold;
+            padding: 9px 8px;
+            background: #0f172a;
+            color: #ffffff;
             text-transform: uppercase;
+            letter-spacing: 0.7px;
+            font-size: 7.2pt;
             text-align: left;
+            border: 1px solid #0f172a;
         }
 
         .items-table tbody td {
-            padding: 9px 10px;
-            font-size: 10pt;
-            border-bottom: 1px dotted #b9bec6;
+            padding: 9px 8px;
+            border: 1px solid #d6dce5;
+            font-size: 8.2pt;
             vertical-align: top;
+            color: #334155;
         }
 
-        .description {
+        .items-table tbody tr:nth-child(even) td {
+            background: #f8fafc;
+        }
+
+        .item-name {
             font-weight: bold;
+            color: #0f172a;
+            font-size: 8.6pt;
         }
 
-        .sub-description {
-            margin-top: 2px;
-            font-size: 8pt;
-            color: #526074;
+        .item-meta {
+            margin-top: 3px;
+            color: #64748b;
+            font-size: 7.5pt;
+            line-height: 1.45;
         }
 
         .text-center {
@@ -175,241 +283,358 @@
             text-align: right;
         }
 
-        .total-wrap {
+        .summary-grid {
             width: 100%;
-            margin-top: 0;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 14px;
         }
 
-        .total-spacer {
-            width: 49%;
-            display: table-cell;
+        .summary-grid td {
+            vertical-align: top;
         }
 
-        .total-box-cell {
-            width: 51%;
-            display: table-cell;
+        .content-cell {
+            width: 56%;
+            padding-right: 12px;
         }
 
-        .total-box {
+        .totals-cell {
+            width: 44%;
+        }
+
+        .content-block {
+            border: 1px solid #d6dce5;
+            padding: 10px 12px;
+            margin-bottom: 10px;
+            background: #ffffff;
+        }
+
+        .content-title {
+            margin-bottom: 6px;
+            font-size: 7.5pt;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #64748b;
+        }
+
+        .content-text {
+            font-size: 8.1pt;
+            line-height: 1.6;
+            color: #475569;
+            white-space: pre-line;
+        }
+
+        .totals-table {
             width: 100%;
             border-collapse: collapse;
         }
 
-        .total-box td {
-            border-top: 1px solid #a8afb9;
-            border-bottom: 1px solid #a8afb9;
+        .totals-table td {
             padding: 8px 10px;
-            font-size: 10pt;
+            border: 1px solid #d6dce5;
+            font-size: 8.4pt;
         }
 
-        .total-box .label {
+        .totals-label {
+            color: #475569;
+        }
+
+        .totals-value {
+            text-align: right;
+            font-weight: bold;
+            color: #0f172a;
+        }
+
+        .totals-grand td {
+            background: #0f172a;
+            color: #ffffff;
+            font-size: 9.4pt;
+        }
+
+        .totals-grand .totals-value {
+            color: #ffffff;
+        }
+
+        .signoff {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .signoff td {
+            vertical-align: top;
+        }
+
+        .signoff-note {
+            width: 58%;
+            padding-right: 20px;
+            font-size: 8.6pt;
+            line-height: 1.65;
+            color: #475569;
+        }
+
+        .signature-area {
+            width: 42%;
+            text-align: right;
+        }
+
+        .signature-company {
+            font-size: 8pt;
             text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #64748b;
         }
 
-        .total-box .value {
-            text-align: right;
-        }
-
-        .closing {
-            margin-top: 22px;
-            font-size: 9.3pt;
-        }
-
-        .terms-block {
-            margin-top: 26px;
-            font-size: 8.8pt;
-            color: #001b44;
-        }
-
-        .terms-title {
-            font-size: 11pt;
+        .signature-name {
+            margin-top: 4px;
+            font-size: 10pt;
             font-weight: bold;
-            margin-bottom: 4px;
-        }
-
-        .terms-content {
-            line-height: 1.5;
-        }
-
-        .terms-list {
-            margin: 0;
-            padding-left: 18px;
-        }
-
-        .terms-list li {
-            text-align: left;
-        }
-
-        .company-signoff {
-            margin-top: 46px;
-            text-align: center;
-            font-size: 11pt;
-            font-weight: bold;
-        }
-
-        .signature-block {
-            margin-top: 56px;
-            text-align: right;
+            color: #0f172a;
         }
 
         .signature-space {
-            height: 70px;
+            height: 56px;
         }
 
-        .signature-text {
-            text-align: right;
-            font-size: 9.5pt;
-            text-transform: uppercase;
+        .signature-line {
+            border-top: 1px solid #94a3b8;
+            padding-top: 5px;
+            font-size: 7.8pt;
+            color: #475569;
+        }
+
+        .footer {
+            margin-top: 18px;
+            padding-top: 8px;
+            border-top: 1px solid #d6dce5;
+            text-align: center;
+            font-size: 7.4pt;
+            color: #64748b;
+            line-height: 1.5;
         }
     </style>
 </head>
 
 <body>
+    @php
+        $customerName = $quotation->customer->company_name ?: $quotation->customer->name;
+        $contactName = $quotation->customer->company_name && $quotation->customer->name !== $quotation->customer->company_name
+            ? $quotation->customer->name
+            : null;
+        $taxAmount = ($quotation->subtotal - $quotation->discount) * $quotation->tax / 100;
+        $termsText = trim((string) $quotation->terms);
+
+        if ($termsText === '') {
+            $termsText = '50% advance payment in cash.';
+        }
+    @endphp
+
     <div class="page">
-        <table class="top-table">
+        <table class="header">
             <tr>
-                <td class="logo-cell">
+                <td class="brand">
                     @if(!empty($company['logo_base64']))
                         <img src="{{ $company['logo_base64'] }}" alt="Logo" class="logo">
                     @endif
-                </td>
-                <td class="company-cell">
                     <div class="company-name">{{ $company['name'] }}</div>
-                    <div class="owner-name">{{ $company['owner'] }}</div>
+                    @if(!empty($company['tagline']))
+                        <div class="company-tagline">{{ $company['tagline'] }}</div>
+                    @endif
                     <div class="company-meta">
-                        {{ $company['address'] }}<br>
-                        {{ $company['phone'] }} &nbsp;&nbsp; {{ $company['email'] }}
+                        @if(!empty($company['owner'])){{ $company['owner'] }}<br>@endif
+                        @if(!empty($company['address'])){{ $company['address'] }}<br>@endif
+                        @if(!empty($company['phone']))Tel: {{ $company['phone'] }}@endif
+                        @if(!empty($company['email'])) &nbsp;|&nbsp; Email: {{ $company['email'] }}@endif
                     </div>
                 </td>
-                <td class="title-cell">
-                    <div class="title">Quotation</div>
+                <td class="document">
+                    <div class="doc-card">
+                        <div class="doc-kicker">Commercial Proposal</div>
+                        <div class="doc-title">QUOTATION</div>
+                        <div class="doc-number">{{ $quotation->quotation_number }}</div>
+                        <div class="doc-status">{{ strtoupper($quotation->status) }}</div>
+                    </div>
                 </td>
             </tr>
         </table>
 
-        <div class="divider"></div>
-
-        <table class="meta-table">
+        <table class="hero-strip">
             <tr>
-                <td class="to-cell">
-                    <div class="to-label">To,</div>
-                    <div class="to-name">
-                        {{ $quotation->customer->company_name ?: $quotation->customer->name }}
-                        @if($quotation->customer->company_name && $quotation->customer->name !== $quotation->customer->company_name)<br>{{ $quotation->customer->name }}@endif
+                <td>
+                    <div class="hero-copy">
+                        Thank you for your valuable inquiry. Please find our formal quotation below with the proposed
+                        scope, pricing, and commercial terms for your review.
                     </div>
                 </td>
-                <td class="ref-cell">
-                    <table class="ref-inner">
-                        <tr>
-                            <td class="ref-key">Quotation#</td>
-                            <td class="ref-val">{{ $quotation->quotation_number }}</td>
-                        </tr>
-                        <tr>
-                            <td class="ref-key">Date:</td>
-                            <td class="ref-val">{{ $quotation->date->format('d/m/Y') }}</td>
-                        </tr>
-                    </table>
+                <td class="hero-highlight">
+                    Proposal Value
+                    <strong>{{ $company['currency_symbol'] }} {{ number_format($quotation->grand_total, 2) }}</strong>
                 </td>
             </tr>
         </table>
 
-        <div class="paragraph">Dear Sir,</div>
-        <div class="paragraph">Thank you for your valuable inquiry. We are pleased to quote as below:</div>
+        <table class="info-grid">
+            <tr>
+                <td class="party-cell">
+                    <div class="panel">
+                        <div class="panel-title">Prepared For</div>
+                        <div class="party-name">
+                            {{ $customerName }}
+                            @if($contactName)
+                                <br>{{ $contactName }}
+                            @endif
+                        </div>
+                        <div class="party-meta">
+                            @if($quotation->customer->phone)Tel: {{ $quotation->customer->phone }}<br>@endif
+                            @if($quotation->customer->email){{ $quotation->customer->email }}<br>@endif
+                            @if($quotation->customer->address){{ $quotation->customer->address }}@endif
+                        </div>
+                    </div>
+                </td>
+                <td class="meta-cell">
+                    <div class="panel">
+                        <div class="panel-title">Quotation Details</div>
+                        <table class="meta-table">
+                            <tr>
+                                <td class="meta-key">Quotation No.</td>
+                                <td class="meta-value">{{ $quotation->quotation_number }}</td>
+                            </tr>
+                            <tr>
+                                <td class="meta-key">Quotation Date</td>
+                                <td class="meta-value">{{ $quotation->date->format('d M Y') }}</td>
+                            </tr>
+                            @if($quotation->valid_until)
+                                <tr>
+                                    <td class="meta-key">Valid Until</td>
+                                    <td class="meta-value">{{ $quotation->valid_until->format('d M Y') }}</td>
+                                </tr>
+                            @endif
+                            @if($quotation->prepared_by)
+                                <tr>
+                                    <td class="meta-key">Prepared By</td>
+                                    <td class="meta-value">{{ $quotation->prepared_by }}</td>
+                                </tr>
+                            @endif
+                            <tr>
+                                <td class="meta-key">Status</td>
+                                <td class="meta-value">{{ ucfirst($quotation->status) }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+        <div class="intro">
+            Dear Sir / Madam,<br>
+            We are pleased to submit our quotation as detailed below. The pricing is based on the scope and quantities
+            currently requested and remains subject to the commercial terms stated in this document.
+        </div>
 
         <table class="items-table">
             <thead>
                 <tr>
-                    <th style="width:6%;" class="text-center">#</th>
-                    <th style="width:50%;">Description</th>
-                    <th style="width:12%;" class="text-center">Qty</th>
-                    <th style="width:16%;" class="text-right">Price</th>
-                    <th style="width:16%;" class="text-right">Total</th>
+                    <th style="width: 6%;" class="text-center">#</th>
+                    <th style="width: 40%;">Item Description</th>
+                    <th style="width: 10%;" class="text-center">Qty</th>
+                    <th style="width: 10%;" class="text-center">Unit</th>
+                    <th style="width: 16%;" class="text-right">Unit Price</th>
+                    <th style="width: 18%;" class="text-right">Amount</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($quotation->items as $i => $item)
+                @foreach($quotation->items as $index => $item)
                     <tr>
-                        <td class="text-center">{{ $i + 1 }}</td>
+                        <td class="text-center">{{ $index + 1 }}</td>
                         <td>
-                            <div class="description">{{ $item->item_name }}</div>
-                            @if($item->description)
-                            <div class="sub-description">{{ $item->description }}</div>@endif
-                            @if($item->size)
-                            <div class="sub-description">Size: {{ $item->size }}</div>@endif
+                            <div class="item-name">{{ $item->item_name }}</div>
+                            @if($item->description || $item->size)
+                                <div class="item-meta">
+                                    @if($item->description){{ $item->description }}@endif
+                                    @if($item->description && $item->size)<br>@endif
+                                    @if($item->size)Size: {{ $item->size }}@endif
+                                </div>
+                            @endif
                         </td>
                         <td class="text-center">{{ rtrim(rtrim(number_format($item->quantity, 2), '0'), '.') }}</td>
-                        <td class="text-right">{{ $company['currency_symbol'] }} {{ number_format($item->unit_price, 2) }}
-                        </td>
+                        <td class="text-center">{{ $item->unit ?: '-' }}</td>
+                        <td class="text-right">{{ $company['currency_symbol'] }} {{ number_format($item->unit_price, 2) }}</td>
                         <td class="text-right">{{ $company['currency_symbol'] }} {{ number_format($item->total, 2) }}</td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
 
-        <table class="total-wrap">
+        <table class="summary-grid">
             <tr>
-                <td class="total-spacer"></td>
-                <td class="total-box-cell">
-                    <table class="total-box">
-                        @if($quotation->discount > 0 || $quotation->tax > 0)
-                            <tr>
-                                <td class="label">Subtotal</td>
-                                <td class="value">{{ $company['currency_symbol'] }}
-                                    {{ number_format($quotation->subtotal, 2) }}
-                                </td>
-                            </tr>
-                        @endif
+                <td class="content-cell">
+                    @if($quotation->notes)
+                        <div class="content-block">
+                            <div class="content-title">Notes</div>
+                            <div class="content-text">{{ $quotation->notes }}</div>
+                        </div>
+                    @endif
+
+                    @if($termsText !== '')
+                        <div class="content-block" style="margin-bottom: 0;">
+                            <div class="content-title">Terms &amp; Conditions</div>
+                            <div class="content-text">{{ $termsText }}</div>
+                        </div>
+                    @endif
+                </td>
+                <td class="totals-cell">
+                    <table class="totals-table">
+                        <tr>
+                            <td class="totals-label">Subtotal</td>
+                            <td class="totals-value">{{ $company['currency_symbol'] }} {{ number_format($quotation->subtotal, 2) }}</td>
+                        </tr>
                         @if($quotation->discount > 0)
                             <tr>
-                                <td class="label">Discount</td>
-                                <td class="value">- {{ $company['currency_symbol'] }}
-                                    {{ number_format($quotation->discount, 2) }}
-                                </td>
+                                <td class="totals-label">Discount</td>
+                                <td class="totals-value">- {{ $company['currency_symbol'] }} {{ number_format($quotation->discount, 2) }}</td>
                             </tr>
                         @endif
                         @if($quotation->tax > 0)
                             <tr>
-                                <td class="label">Tax ({{ $quotation->tax }}%)</td>
-                                <td class="value">{{ $company['currency_symbol'] }}
-                                    {{ number_format(($quotation->subtotal - $quotation->discount) * $quotation->tax / 100, 2) }}
-                                </td>
+                                <td class="totals-label">Tax ({{ $quotation->tax }}%)</td>
+                                <td class="totals-value">{{ $company['currency_symbol'] }} {{ number_format($taxAmount, 2) }}</td>
                             </tr>
                         @endif
-                        <tr>
-                            <td class="label">Grand Total</td>
-                            <td class="value">{{ $company['currency_symbol'] }}
-                                {{ number_format($quotation->grand_total, 2) }}
-                            </td>
+                        <tr class="totals-grand">
+                            <td>Total Quotation Value</td>
+                            <td class="totals-value">{{ $company['currency_symbol'] }} {{ number_format($quotation->grand_total, 2) }}</td>
                         </tr>
                     </table>
                 </td>
             </tr>
         </table>
 
-        <div class="closing">We hope you find our offer to be in line with your requirement.</div>
+        <table class="signoff">
+            <tr>
+                <td class="signoff-note">
+                    We trust this proposal meets your requirement and would be pleased to proceed upon your approval.
+                    Please contact us if you need any revisions, clarifications, or an updated commercial breakdown.
+                </td>
+                <td class="signature-area">
+                    <div class="signature-company">For {{ strtoupper($company['name']) }}</div>
+                    <div class="signature-name">Authorized Signatory</div>
+                    <div class="signature-space"></div>
+                    <div class="signature-line">
+                        @if(!empty($company['owner'])){{ $company['owner'] }}<br>@endif
+                        {{ $company['name'] }}
+                    </div>
+                </td>
+            </tr>
+        </table>
 
-        @php
-            $termsText = trim((string) $quotation->terms);
-            if ($termsText === '') {
-                $termsText = '50% advance payment in cash.';
-            }
-        @endphp
-
-        @if($termsText !== '')
-            <div class="terms-block">
-                <div class="terms-title">Terms &amp; Conditions:</div>
-                <div class="terms-content" style="white-space: pre-line;">{{ $termsText }}</div>
-            </div>
-        @endif
-
-        <div class="company-signoff">For, {{ strtoupper($company['name']) }}</div>
-
-        <div class="signature-block">
-            <div class="signature-space"></div>
-            <div class="signature-text">Authorized Signature</div>
+        <div class="footer">
+            {{ $company['name'] }}
+            @if(!empty($company['address'])) &nbsp;|&nbsp; {{ $company['address'] }} @endif
+            @if(!empty($company['phone'])) &nbsp;|&nbsp; {{ $company['phone'] }} @endif
+            @if(!empty($company['email'])) &nbsp;|&nbsp; {{ $company['email'] }} @endif
         </div>
-    </div>
-
     </div>
 </body>
 
