@@ -14,7 +14,7 @@ class InvoiceController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Invoice::with('customer');
+        $query = Invoice::whereNull('deleted_at')->with('customer');
 
         if ($request->filled('status')) {
             $query->where('status', $request->status);
@@ -94,8 +94,14 @@ class InvoiceController extends Controller
 
     public function destroy(Invoice $invoice)
     {
-        $invoice->delete();
-        return redirect()->route('invoices.index')->with('success', 'Invoice deleted.');
+        try {
+            $invoice->delete();
+            return redirect()->route('invoices.index')
+                ->with('success', 'Invoice and all items deleted successfully.');
+        } catch (\Exception $e) {
+            return redirect()->route('invoices.index')
+                ->with('error', 'Failed to delete invoice: ' . $e->getMessage());
+        }
     }
 
     public function pdf(Invoice $invoice)

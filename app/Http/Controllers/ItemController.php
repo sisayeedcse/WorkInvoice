@@ -9,7 +9,7 @@ class ItemController extends Controller
 {
     public function index(Request $request)
     {
-        $items = Item::latest()->get();
+        $items = Item::whereNull('deleted_at')->latest()->get();
 
         return view('items.index', compact('items'));
     }
@@ -58,9 +58,14 @@ class ItemController extends Controller
 
     public function destroy(Item $item)
     {
-        $item->delete();
-        return redirect()->route('items.index')
-            ->with('success', 'Service item deleted.');
+        try {
+            $item->delete();
+            return redirect()->route('items.index')
+                ->with('success', 'Service item deleted successfully.');
+        } catch (\Exception $e) {
+            return redirect()->route('items.index')
+                ->with('error', 'Failed to delete item: ' . $e->getMessage());
+        }
     }
 
     public function search(Request $request)

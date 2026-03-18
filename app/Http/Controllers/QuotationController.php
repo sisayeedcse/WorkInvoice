@@ -16,7 +16,7 @@ class QuotationController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Quotation::with('customer');
+        $query = Quotation::whereNull('deleted_at')->with('customer');
 
         if ($request->filled('status')) {
             $query->where('status', $request->status);
@@ -165,9 +165,14 @@ class QuotationController extends Controller
 
     public function destroy(Quotation $quotation)
     {
-        $quotation->delete();
-        return redirect()->route('quotations.index')
-            ->with('success', 'Quotation deleted.');
+        try {
+            $quotation->delete();
+            return redirect()->route('quotations.index')
+                ->with('success', 'Quotation and all items deleted successfully.');
+        } catch (\Exception $e) {
+            return redirect()->route('quotations.index')
+                ->with('error', 'Failed to delete quotation: ' . $e->getMessage());
+        }
     }
 
     public function pdf(Quotation $quotation)

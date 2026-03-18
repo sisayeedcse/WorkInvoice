@@ -15,9 +15,13 @@ use Illuminate\Support\Facades\Route;
 // Redirect root to dashboard
 Route::get('/', fn () => redirect()->route('dashboard'));
 
+// Debug/Test routes
+Route::get('/test/delete-status', [\App\Http\Controllers\TestController::class, 'testDelete'])->name('test.delete-status');
+Route::post('/test/destroy-customer/{id}', [\App\Http\Controllers\TestController::class, 'testDestroyCustomer'])->name('test.destroy-customer');
 // Auth routes (Breeze)
 require __DIR__ . '/auth.php';
 
+Route::get('/test/delete-model', [\App\Http\Controllers\TestController::class, 'testDeleteModel'])->name('test.delete-model');
 // Protected routes
 Route::middleware(['auth', 'verified'])->group(function () {
 

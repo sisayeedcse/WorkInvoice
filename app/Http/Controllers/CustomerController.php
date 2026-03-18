@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Customer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class CustomerController extends Controller
 {
     public function index(Request $request)
     {
-        $customers = Customer::withCount(['quotations', 'orders', 'invoices'])
+        $customers = Customer::whereNull('deleted_at')
+            ->withCount(['quotations', 'orders', 'invoices'])
             ->latest()->get();
 
         return view('customers.index', compact('customers'));
@@ -67,8 +69,15 @@ class CustomerController extends Controller
 
     public function destroy(Customer $customer)
     {
-        $customer->delete();
-        return redirect()->route('customers.index')
-            ->with('success', 'Customer deleted successfully.');
+        try {
+            $customer->delete();
+                        Log::info('Customer deleted successfully', ['customer_id' => $customer->id, 'name' => $customer->name]);
+            return redirect()->route('customers.index')
+                ->with('success', 'Customer and all related records deleted successfully.');
+        } catch (\Exception $e) {
+                        Log::error('Failed to delete customer', ['customer_id' => $customer->id, 'error' => $e->getMessage()]);
+            return redirect()->route('customers.index')
+                ->with('error', 'Failed to delete customer: ' . $e->getMessage());
+        }
     }
 }

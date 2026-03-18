@@ -12,7 +12,7 @@ class PurchaseOrderController extends Controller
 {
     public function index(Request $request)
     {
-        $query = PurchaseOrder::query();
+        $query = PurchaseOrder::whereNull('deleted_at');
 
         if ($request->filled('status')) {
             $query->where('status', $request->status);
@@ -124,8 +124,12 @@ class PurchaseOrderController extends Controller
 
     public function destroy(PurchaseOrder $purchaseOrder)
     {
-        $purchaseOrder->delete();
-        return redirect()->route('purchase-orders.index')->with('success', 'Purchase order deleted.');
+        try {
+            $purchaseOrder->delete();
+            return redirect()->route('purchase-orders.index')->with('success', 'Purchase order and all items deleted successfully.');
+        } catch (\Exception $e) {
+            return redirect()->route('purchase-orders.index')->with('error', 'Failed to delete purchase order: ' . $e->getMessage());
+        }
     }
 
     public function pdf(PurchaseOrder $purchaseOrder)

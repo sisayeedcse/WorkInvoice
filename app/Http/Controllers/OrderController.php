@@ -15,7 +15,7 @@ class OrderController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Order::with('customer');
+        $query = Order::whereNull('deleted_at')->with('customer');
 
         if ($request->filled('status')) {
             $query->where('status', $request->status);
@@ -126,8 +126,12 @@ class OrderController extends Controller
 
     public function destroy(Order $order)
     {
-        $order->delete();
-        return redirect()->route('orders.index')->with('success', 'Order deleted.');
+        try {
+            $order->delete();
+            return redirect()->route('orders.index')->with('success', 'Order and all items deleted successfully.');
+        } catch (\Exception $e) {
+            return redirect()->route('orders.index')->with('error', 'Failed to delete order: ' . $e->getMessage());
+        }
     }
 
     public function convertToInvoice(Order $order)
