@@ -24,7 +24,7 @@
         .header {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 18px;
+            margin-bottom: 16px;
         }
 
         .header td {
@@ -65,9 +65,9 @@
         }
 
         .company-meta {
-            margin-top: 9px;
+            margin-top: 8px;
             font-size: 8.2pt;
-            line-height: 1.6;
+            line-height: 1.55;
             color: #475569;
         }
 
@@ -78,7 +78,7 @@
         }
 
         .doc-kicker {
-            font-size: 7.6pt;
+            font-size: 7.4pt;
             text-transform: uppercase;
             letter-spacing: 1.6px;
             color: #64748b;
@@ -112,43 +112,46 @@
             letter-spacing: 0.9px;
         }
 
-        .hero-strip {
+        .headline {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
             border-top: 2px solid #0f172a;
             border-bottom: 1px solid #d6dce5;
         }
 
-        .hero-strip td {
+        .headline td {
             padding: 10px 0;
             vertical-align: middle;
         }
 
-        .hero-copy {
-            font-size: 8.6pt;
+        .headline-note {
+            font-size: 8.4pt;
             color: #475569;
             line-height: 1.55;
         }
 
-        .hero-highlight {
+        .headline-amount {
             text-align: right;
-            font-size: 8.3pt;
             color: #64748b;
+            font-size: 8pt;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
         }
 
-        .hero-highlight strong {
+        .headline-amount strong {
             display: block;
-            margin-top: 2px;
-            font-size: 12pt;
+            margin-top: 3px;
+            font-size: 13pt;
             color: #0f172a;
+            letter-spacing: 0;
         }
 
         .info-grid {
             width: 100%;
             border-collapse: separate;
             border-spacing: 0;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
         }
 
         .info-grid td {
@@ -168,12 +171,12 @@
             border: 1px solid #d6dce5;
             background: #ffffff;
             padding: 12px 14px;
-            min-height: 126px;
+            min-height: 120px;
         }
 
         .panel-title {
             margin-bottom: 7px;
-            font-size: 7.6pt;
+            font-size: 7.4pt;
             font-weight: bold;
             text-transform: uppercase;
             letter-spacing: 1.2px;
@@ -190,7 +193,7 @@
         .party-meta {
             margin-top: 5px;
             font-size: 8.2pt;
-            line-height: 1.6;
+            line-height: 1.55;
             color: #475569;
         }
 
@@ -224,34 +227,24 @@
             font-weight: bold;
         }
 
-        .intro {
-            margin-bottom: 14px;
-            padding: 11px 12px;
-            border-left: 3px solid #f59e0b;
-            background: #fffbeb;
-            font-size: 8.5pt;
-            line-height: 1.65;
-            color: #4b5563;
-        }
-
         .items-table {
             width: 100%;
             border-collapse: collapse;
         }
 
         .items-table thead th {
-            padding: 9px 8px;
+            padding: 8px;
             background: #0f172a;
             color: #ffffff;
             text-transform: uppercase;
             letter-spacing: 0.7px;
-            font-size: 7.2pt;
+            font-size: 7.1pt;
             text-align: left;
             border: 1px solid #0f172a;
         }
 
         .items-table tbody td {
-            padding: 9px 8px;
+            padding: 8px;
             border: 1px solid #d6dce5;
             font-size: 8.2pt;
             vertical-align: top;
@@ -369,7 +362,7 @@
         .signoff {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            margin-top: 18px;
         }
 
         .signoff td {
@@ -379,8 +372,8 @@
         .signoff-note {
             width: 58%;
             padding-right: 20px;
-            font-size: 8.6pt;
-            line-height: 1.65;
+            font-size: 8.4pt;
+            line-height: 1.6;
             color: #475569;
         }
 
@@ -416,7 +409,7 @@
         }
 
         .footer {
-            margin-top: 18px;
+            margin-top: 16px;
             padding-top: 8px;
             border-top: 1px solid #d6dce5;
             text-align: center;
@@ -438,7 +431,7 @@
         $hasItemDates = $invoice->items->contains(fn($item) => !empty($item->item_date));
 
         if ($termsText === '') {
-            $termsText = 'Payment is due as per the terms stated on this invoice. Please mention the invoice number with your remittance.';
+            $termsText = 'Payment terms and billing conditions are defined for this invoice.';
         }
     @endphp
 
@@ -462,7 +455,7 @@
                 </td>
                 <td class="document">
                     <div class="doc-card">
-                        <div class="doc-kicker">Billing Document</div>
+                        <div class="doc-kicker">Accounts Document</div>
                         <div class="doc-title">INVOICE</div>
                         <div class="doc-number">{{ $invoice->invoice_number }}</div>
                         <div class="doc-status">{{ strtoupper($invoice->status) }}</div>
@@ -471,15 +464,14 @@
             </tr>
         </table>
 
-        <table class="hero-strip">
+        <table class="headline">
             <tr>
                 <td>
-                    <div class="hero-copy">
-                        Please find below the invoice for the completed scope of work, supplied items, or approved order.
-                        Kindly arrange payment within the stated due period and reference the invoice number in all correspondence.
+                    <div class="headline-note">
+                        Billing statement for delivered services, goods, or approved work scope.
                     </div>
                 </td>
-                <td class="hero-highlight">
+                <td class="headline-amount">
                     Balance Due
                     <strong>{{ $company['currency_symbol'] }} {{ number_format($invoice->balance, 2) }}</strong>
                 </td>
@@ -506,7 +498,7 @@
                 </td>
                 <td class="meta-cell">
                     <div class="panel">
-                        <div class="panel-title">Invoice Details</div>
+                        <div class="panel-title">Invoice Summary</div>
                         <table class="meta-table">
                             <tr>
                                 <td class="meta-key">Invoice No.</td>
@@ -544,17 +536,11 @@
             </tr>
         </table>
 
-        <div class="intro">
-            Dear Customer,<br>
-            Thank you for your business. This invoice summarizes the supplied items and approved charges. Please review
-            the billing details below and settle the outstanding amount within the applicable credit period.
-        </div>
-
         <table class="items-table">
             <thead>
                 <tr>
                     <th style="width: 6%;" class="text-center">#</th>
-                    <th style="width: {{ $hasItemDates ? '32%' : '40%' }};">Item Description</th>
+                    <th style="width: {{ $hasItemDates ? '32%' : '40%' }};">Description</th>
                     @if($hasItemDates)
                         <th style="width: 14%;" class="text-center">Date</th>
                     @endif
@@ -596,12 +582,10 @@
                         </div>
                     @endif
 
-                    @if($termsText !== '')
-                        <div class="content-block" style="margin-bottom: 0;">
-                            <div class="content-title">Terms &amp; Conditions</div>
-                            <div class="content-text">{{ $termsText }}</div>
-                        </div>
-                    @endif
+                    <div class="content-block" style="margin-bottom: 0;">
+                        <div class="content-title">Terms</div>
+                        <div class="content-text">{{ $termsText }}</div>
+                    </div>
                 </td>
                 <td class="totals-cell">
                     <table class="totals-table">
@@ -643,8 +627,7 @@
         <table class="signoff">
             <tr>
                 <td class="signoff-note">
-                    We appreciate your business. For any billing clarification, payment advice, or statement request,
-                    please contact our accounts team and mention the invoice reference shown above.
+                    Reference this invoice number for payment records and account reconciliation.
                 </td>
                 <td class="signature-area">
                     <div class="signature-company">For {{ strtoupper($company['name']) }}</div>
