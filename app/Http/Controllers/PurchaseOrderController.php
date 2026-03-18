@@ -25,17 +25,18 @@ class PurchaseOrderController extends Controller
 
     public function create()
     {
-        $terms = config('company.terms');
-        return view('purchase-orders.create', compact('terms'));
+        return view('purchase-orders.create');
     }
 
     public function store(Request $request)
     {
         $request->validate([
+            'po_number'             => 'nullable|string|max:255|unique:purchase_orders,po_number',
             'supplier_name'         => 'required|string|max:255',
             'date'                  => 'required|date',
             'items'                 => 'required|array|min:1',
             'items.*.item_name'     => 'required|string',
+            'items.*.date'          => 'nullable|date',
             'items.*.quantity'      => 'required|numeric|min:0.01',
             'items.*.unit_price'    => 'required|numeric|min:0',
         ]);
@@ -48,7 +49,7 @@ class PurchaseOrderController extends Controller
             $grandTotal = $subtotal - $discount + (($subtotal - $discount) * $tax / 100);
 
             $po = PurchaseOrder::create([
-                'po_number'        => PurchaseOrder::generateNumber(),
+                'po_number'        => $request->filled('po_number') ? trim((string) $request->po_number) : PurchaseOrder::generateNumber(),
                 'supplier_name'    => $request->supplier_name,
                 'supplier_phone'   => $request->supplier_phone,
                 'supplier_email'   => $request->supplier_email,
@@ -71,6 +72,7 @@ class PurchaseOrderController extends Controller
                     'purchase_order_id' => $po->id,
                     'item_name'         => $itemData['item_name'],
                     'description'       => $itemData['description'] ?? null,
+                    'line_date'         => $itemData['date'] ?? null,
                     'quantity'          => $itemData['quantity'],
                     'unit'              => $itemData['unit'] ?? 'Unit',
                     'unit_price'        => $itemData['unit_price'],

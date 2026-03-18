@@ -630,8 +630,10 @@
                         <label class="qf-label">PO Number</label>
                         <div class="qf-input-wrap">
                             <i class="bi bi-hash qf-input-icon"></i>
-                            <input type="text" class="form-control" value="Auto-generated on save" readonly>
+                            <input type="text" name="po_number" class="form-control @error('po_number') is-invalid @enderror"
+                                value="{{ old('po_number') }}" placeholder="Leave empty for auto-generated number">
                         </div>
+                        @error('po_number')<div class="invalid-feedback d-block mt-1">{{ $message }}</div>@enderror
                     </div>
                     <div>
                         <label class="qf-label">PO Date <span class="req">*</span></label>
@@ -674,6 +676,7 @@
                         <tr>
                             <th style="width:44px; text-align:center;">#</th>
                             <th style="min-width:220px;">Item / Material</th>
+                            <th style="width:150px;">Date (Optional)</th>
                             <th style="min-width:180px;">Description</th>
                             <th style="width:100px; text-align:center;">Qty</th>
                             <th style="width:110px;">Unit</th>
@@ -689,6 +692,7 @@
                             </td>
                             <td><input type="text" name="items[0][item_name]" class="form-control item-name-input"
                                     placeholder="Material or item" required></td>
+                            <td><input type="date" name="items[0][date]" class="form-control"></td>
                             <td><input type="text" name="items[0][description]" class="form-control" placeholder="Optional">
                             </td>
                             <td><input type="number" name="items[0][quantity]" class="form-control qty-input text-center"
@@ -769,7 +773,7 @@
                     <div class="col-12 col-md-7">
                         <label class="qf-label">Terms &amp; Conditions</label>
                         <textarea name="terms" class="form-control" rows="5"
-                            style="font-size:.875rem; resize:vertical;">{{ old('terms', $terms) }}</textarea>
+                            style="font-size:.875rem; resize:vertical;">{{ old('terms') }}</textarea>
                     </div>
                 </div>
             </div>
@@ -798,11 +802,12 @@
             }).join('');
         }
 
-        function addRow(name, desc, price, unit) {
+        function addRow(name, desc, price, unit, lineDate) {
             name = name || '';
             desc = desc || '';
             price = price || '0.00';
             unit = unit || 'Unit';
+            lineDate = lineDate || '';
 
             var idx = rowIndex;
             var tr = document.createElement('tr');
@@ -811,6 +816,7 @@
             tr.innerHTML =
                 '<td><div class="qf-row-num">' + (idx + 1) + '</div></td>' +
                 '<td><input type="text" name="items[' + idx + '][item_name]" class="form-control item-name-input" value="' + escHtml(name) + '" placeholder="Material or item" required></td>' +
+                '<td><input type="date" name="items[' + idx + '][date]" class="form-control" value="' + escHtml(lineDate) + '"></td>' +
                 '<td><input type="text" name="items[' + idx + '][description]" class="form-control" value="' + escHtml(desc) + '" placeholder="Optional"></td>' +
                 '<td><input type="number" name="items[' + idx + '][quantity]" class="form-control qty-input text-center" value="1" step="0.01" min="0.01" required></td>' +
                 '<td><select name="items[' + idx + '][unit]" class="form-select">' + buildUnitOptions(unit) + '</select></td>' +

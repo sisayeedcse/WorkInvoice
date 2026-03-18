@@ -27,8 +27,15 @@ class PurchaseOrder extends Model
 
     public static function generateNumber(): string
     {
-        $last = static::withTrashed()->orderByDesc('id')->first();
-        $next = $last ? ((int) substr($last->po_number, 3)) + 1 : 1;
+        $lastAuto = static::withTrashed()
+            ->where('po_number', 'like', 'PO-%')
+            ->orderByDesc('id')
+            ->get(['po_number'])
+            ->first(function ($po) {
+                return preg_match('/^PO-\d+$/', (string) $po->po_number) === 1;
+            });
+
+        $next = $lastAuto ? ((int) substr((string) $lastAuto->po_number, 3)) + 1 : 1;
         return 'PO-' . str_pad($next, 5, '0', STR_PAD_LEFT);
     }
 

@@ -8,13 +8,14 @@ class PurchaseOrderItem extends Model
 {
     protected $fillable = [
         'purchase_order_id', 'item_name', 'description',
-        'quantity', 'unit', 'unit_price', 'total', 'sort_order',
+        'quantity', 'unit', 'unit_price', 'total', 'sort_order', 'line_date',
     ];
 
     protected $casts = [
         'quantity'   => 'decimal:2',
         'unit_price' => 'decimal:2',
         'total'      => 'decimal:2',
+        'line_date'  => 'date',
     ];
 
     public function purchaseOrder()
