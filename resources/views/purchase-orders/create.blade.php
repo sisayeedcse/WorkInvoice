@@ -630,8 +630,9 @@
                         <label class="qf-label">PO Number</label>
                         <div class="qf-input-wrap">
                             <i class="bi bi-hash qf-input-icon"></i>
-                            <input type="text" name="po_number" class="form-control @error('po_number') is-invalid @enderror"
-                                value="{{ old('po_number') }}" placeholder="Leave empty for auto-generated number">
+                            <input type="text" name="po_number"
+                                class="form-control @error('po_number') is-invalid @enderror" value="{{ old('po_number') }}"
+                                placeholder="Leave empty for auto-generated number">
                         </div>
                         @error('po_number')<div class="invalid-feedback d-block mt-1">{{ $message }}</div>@enderror
                     </div>
