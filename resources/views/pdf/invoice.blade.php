@@ -435,6 +435,7 @@
             : null;
         $taxAmount = ($invoice->subtotal - $invoice->discount) * $invoice->tax / 100;
         $termsText = trim((string) $invoice->terms);
+        $hasItemDates = $invoice->items->contains(fn($item) => !empty($item->item_date));
 
         if ($termsText === '') {
             $termsText = 'Payment is due as per the terms stated on this invoice. Please mention the invoice number with your remittance.';
@@ -553,10 +554,13 @@
             <thead>
                 <tr>
                     <th style="width: 6%;" class="text-center">#</th>
-                    <th style="width: 40%;">Item Description</th>
-                    <th style="width: 10%;" class="text-center">Qty</th>
-                    <th style="width: 10%;" class="text-center">Unit</th>
-                    <th style="width: 16%;" class="text-right">Unit Price</th>
+                    <th style="width: {{ $hasItemDates ? '32%' : '40%' }};">Item Description</th>
+                    @if($hasItemDates)
+                        <th style="width: 14%;" class="text-center">Date</th>
+                    @endif
+                    <th style="width: {{ $hasItemDates ? '8%' : '10%' }};" class="text-center">Qty</th>
+                    <th style="width: {{ $hasItemDates ? '8%' : '10%' }};" class="text-center">Unit</th>
+                    <th style="width: {{ $hasItemDates ? '14%' : '16%' }};" class="text-right">Unit Price</th>
                     <th style="width: 18%;" class="text-right">Amount</th>
                 </tr>
             </thead>
@@ -570,6 +574,9 @@
                                 <div class="item-meta">{{ $item->description }}</div>
                             @endif
                         </td>
+                        @if($hasItemDates)
+                            <td class="text-center">{{ $item->item_date ? $item->item_date->format('d M Y') : '-' }}</td>
+                        @endif
                         <td class="text-center">{{ rtrim(rtrim(number_format($item->quantity, 2), '0'), '.') }}</td>
                         <td class="text-center">{{ $item->unit ?: '-' }}</td>
                         <td class="text-right">{{ $company['currency_symbol'] }} {{ number_format($item->unit_price, 2) }}</td>

@@ -28,8 +28,7 @@ class InvoiceController extends Controller
     public function create()
     {
         $customers = Customer::where('is_active', true)->orderBy('name')->get();
-        $terms     = config('company.terms');
-        return view('invoices.create', compact('customers', 'terms'));
+        return view('invoices.create', compact('customers'));
     }
 
     public function store(Request $request)
@@ -39,6 +38,7 @@ class InvoiceController extends Controller
             'date'                  => 'required|date',
             'items'                 => 'required|array|min:1',
             'items.*.item_name'     => 'required|string',
+            'items.*.item_date'     => 'nullable|date',
             'items.*.quantity'      => 'required|numeric|min:0.01',
             'items.*.unit_price'    => 'required|numeric|min:0',
         ]);
@@ -72,6 +72,7 @@ class InvoiceController extends Controller
                     'invoice_id'  => $invoice->id,
                     'item_name'   => $itemData['item_name'],
                     'description' => $itemData['description'] ?? null,
+                    'item_date'   => $itemData['item_date'] ?? null,
                     'quantity'    => $itemData['quantity'],
                     'unit'        => $itemData['unit'] ?? 'Unit',
                     'unit_price'  => $itemData['unit_price'],
