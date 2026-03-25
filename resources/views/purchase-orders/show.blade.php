@@ -14,6 +14,17 @@
             <a href="{{ route('purchase-orders.pdf', $purchaseOrder) }}" class="btn btn-danger btn-sm" target="_blank">
                 <i class="bi bi-file-pdf me-1"></i> Download PDF
             </a>
+            @if(!$purchaseOrder->stock_received && $purchaseOrder->status !== 'cancelled')
+                <form method="POST" action="{{ route('purchase-orders.receive-stock', $purchaseOrder) }}" class="d-inline"
+                    onsubmit="return confirm('Receive stock and update inventory for linked items?')">
+                    @csrf
+                    <button type="submit" class="btn btn-success btn-sm">
+                        <i class="bi bi-box-arrow-in-down me-1"></i> Receive Stock
+                    </button>
+                </form>
+            @else
+                <span class="badge bg-success">Stock Received</span>
+            @endif
             <button class="btn btn-outline-dark btn-sm print-hide" onclick="window.print()">
                 <i class="bi bi-printer me-1"></i> Print
             </button>

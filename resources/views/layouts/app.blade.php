@@ -53,6 +53,20 @@
             <a href="{{ route('items.index') }}" class="nav-link {{ request()->routeIs('items.*') ? 'active' : '' }}">
                 <i class="bi bi-tools"></i><span>Services / Items</span>
             </a>
+            <a href="{{ route('products.index') }}"
+                class="nav-link {{ request()->routeIs('products.*') ? 'active' : '' }}">
+                <i class="bi bi-box-seam"></i><span>Products</span>
+            </a>
+            <a href="{{ route('pos.index') }}" class="nav-link {{ request()->routeIs('pos.*') ? 'active' : '' }}">
+                <i class="bi bi-shop"></i><span>Retail Sales</span>
+            </a>
+            <a href="{{ route('sales.index') }}" class="nav-link {{ request()->routeIs('sales.*') ? 'active' : '' }}">
+                <i class="bi bi-receipt"></i><span>POS History</span>
+            </a>
+            <a href="{{ route('production-orders.index') }}"
+                class="nav-link {{ request()->routeIs('production-orders.*') ? 'active' : '' }}">
+                <i class="bi bi-gear-wide-connected"></i><span>Manufacturing</span>
+            </a>
 
             <div class="nav-section">Documents</div>
             <a href="{{ route('quotations.index') }}"
@@ -74,7 +88,7 @@
             <div class="nav-section">Operations</div>
             <a href="{{ route('projects.index') }}"
                 class="nav-link {{ request()->routeIs('projects.*') ? 'active' : '' }}">
-                <i class="bi bi-kanban"></i><span>Projects</span>
+                <i class="bi bi-kanban"></i><span>Workshop Jobs</span>
             </a>
 
             <div class="nav-section">Analytics</div>

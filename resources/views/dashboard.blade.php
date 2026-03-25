@@ -8,11 +8,15 @@
         <div>
             <div class="hero-kicker"><i class="bi bi-grid-1x2-fill"></i> Operations Overview</div>
             <h1 class="hero-title">Dashboard</h1>
-            <p class="hero-copy">Welcome back, {{ auth()->user()->name }}. Review revenue, operational activity, and recent commercial documents from one clean workspace.</p>
+            <p class="hero-copy">Welcome back, {{ auth()->user()->name }}. Review revenue, operational activity, and recent
+                commercial documents from one clean workspace.</p>
             <div class="highlight-strip mt-3">
-                <span class="highlight-chip"><i class="bi bi-cash-stack"></i>AED {{ number_format($totalRevenue, 0) }} revenue</span>
-                <span class="highlight-chip"><i class="bi bi-hourglass-split"></i>{{ number_format($pendingJobs) }} active jobs</span>
-                <span class="highlight-chip"><i class="bi bi-check-circle"></i>{{ number_format($completedJobs) }} completed</span>
+                <span class="highlight-chip"><i class="bi bi-cash-stack"></i>AED {{ number_format($totalRevenue, 0) }}
+                    revenue</span>
+                <span class="highlight-chip"><i class="bi bi-hourglass-split"></i>{{ number_format($pendingJobs) }} active
+                    jobs</span>
+                <span class="highlight-chip"><i class="bi bi-check-circle"></i>{{ number_format($completedJobs) }}
+                    completed</span>
             </div>
         </div>
         <div class="hero-actions">
@@ -108,6 +112,104 @@
 
     <!-- Charts Row -->
     <div class="row g-3 mb-4">
+        <div class="col-12">
+            <h6 class="text-muted mb-3"><i class="bi bi-shop me-2"></i>Retail & Inventory Today</h6>
+        </div>
+        <div class="col-6 col-lg-4">
+            <div class="stat-card bg-green">
+                <div class="stat-icon"><i class="bi bi-cash-stack"></i></div>
+                <div class="stat-value">{{ number_format($todaySalesAmount, 2) }}</div>
+                <div class="stat-label">POS Revenue Today (AED)</div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-4">
+            <div class="stat-card bg-orange">
+                <div class="stat-icon"><i class="bi bi-receipt"></i></div>
+                <div class="stat-value">{{ number_format($todaySalesCount) }}</div>
+                <div class="stat-label">Sales Today</div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-4">
+            <div class="stat-card bg-amber">
+                <div class="stat-icon"><i class="bi bi-box-seam"></i></div>
+                <div class="stat-value">{{ number_format($todayItemsSold, 3) }}</div>
+                <div class="stat-label">Items Sold Today</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- DAILY BUSINESS SUMMARY -->
+    <div class="row g-3 mb-4">
+        <div class="col-12">
+            <h6 class="text-muted mb-3"><i class="bi bi-graph-up me-2"></i>Daily Business Summary</h6>
+        </div>
+        <div class="col-12 col-lg-3">
+            <div class="stat-card bg-blue">
+                <div class="stat-icon"><i class="bi bi-shop-window"></i></div>
+                <div class="stat-value">{{ number_format($todaySalesAmount, 2) }}</div>
+                <div class="stat-label">Retail Sales Today</div>
+            </div>
+        </div>
+        <div class="col-12 col-lg-3">
+            <div class="stat-card bg-purple">
+                <div class="stat-icon"><i class="bi bi-briefcase"></i></div>
+                <div class="stat-value">{{ number_format($todayProjectIncome, 2) }}</div>
+                <div class="stat-label">Project Income Today</div>
+            </div>
+        </div>
+        <div class="col-12 col-lg-3">
+            <div class="stat-card bg-red">
+                <div class="stat-icon"><i class="bi bi-dash-circle"></i></div>
+                <div class="stat-value">{{ number_format($todayProjectExpenses, 2) }}</div>
+                <div class="stat-label">Total Expenses Today</div>
+            </div>
+        </div>
+        <div class="col-12 col-lg-3">
+            <div class="stat-card {{ $todayNetProfit >= 0 ? 'bg-green' : 'bg-red' }}">
+                <div class="stat-icon"><i class="bi bi-cash-coin"></i></div>
+                <div class="stat-value">{{ $todayNetProfit >= 0 ? '' : '-' }}{{ number_format(abs($todayNetProfit), 2) }}
+                </div>
+                <div class="stat-label">Net Profit Today</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-card mb-4">
+        <div class="table-card-header">
+            <span><i class="bi bi-exclamation-triangle me-2" style="color:var(--accent);"></i>Low Stock Alerts</span>
+            <a href="{{ route('products.index', ['stock_status' => 'low']) }}"
+                class="btn btn-sm btn-outline-secondary rounded-pill">View Products</a>
+        </div>
+        <div class="table-responsive">
+            <table class="table mb-0">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Current Stock</th>
+                        <th>Minimum Stock</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($lowStockItems as $item)
+                        <tr>
+                            <td>{{ $item->name }}</td>
+                            <td>{{ number_format($item->stock_quantity, 3) }} {{ $item->unit }}</td>
+                            <td>{{ number_format($item->reorder_level, 3) }} {{ $item->unit }}</td>
+                            <td>{!! $item->low_stock_badge !!}</td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="4" class="text-center text-muted py-4">No low stock alerts.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Charts Row -->
+    <div class="row g-3 mb-4">
         <div class="col-12 col-lg-8">
             <div class="table-card h-100">
                 <div class="card-header d-flex align-items-center justify-content-between">
@@ -137,7 +239,8 @@
             <div class="table-card">
                 <div class="table-card-header">
                     <span><i class="bi bi-file-earmark-text me-2" style="color:var(--accent);"></i>Recent Quotations</span>
-                    <a href="{{ route('quotations.index') }}" class="btn btn-sm btn-outline-secondary rounded-pill">View All</a>
+                    <a href="{{ route('quotations.index') }}" class="btn btn-sm btn-outline-secondary rounded-pill">View
+                        All</a>
                 </div>
                 <div class="table-responsive">
                     <table class="table mb-0">

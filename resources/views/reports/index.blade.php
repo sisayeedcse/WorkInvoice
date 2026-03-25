@@ -160,6 +160,273 @@
             </div>
         </div>
     </div>
+
+    <div class="row g-3 mt-1">
+        <div class="col-12 col-lg-6">
+            <div class="table-card">
+                <div class="card-header"><i class="bi bi-calendar-day me-2" style="color:var(--accent);"></i>Daily Sales Report</div>
+                <div class="table-responsive">
+                    <table class="table mb-0">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th class="text-center">Sales</th>
+                                <th class="text-end">Revenue (AED)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($dailySalesReport->sortByDesc('sale_date')->take(15) as $daily)
+                                <tr>
+                                    <td>{{ \Carbon\Carbon::parse($daily->sale_date)->format('d M Y') }}</td>
+                                    <td class="text-center">{{ $daily->sales_count }}</td>
+                                    <td class="text-end fw-semibold">{{ number_format($daily->total_revenue, 2) }}</td>
+                                </tr>
+                            @empty
+                                <tr><td colspan="3" class="text-center text-muted py-3">No sales data yet.</td></tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-6">
+            <div class="table-card">
+                <div class="card-header"><i class="bi bi-fire me-2" style="color:var(--accent);"></i>Top Selling Products</div>
+                <div class="table-responsive">
+                    <table class="table mb-0">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th class="text-center">Qty Sold</th>
+                                <th class="text-end">Amount (AED)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($topSellingProducts as $product)
+                                <tr>
+                                    <td>{{ $product->item_name }}</td>
+                                    <td class="text-center">{{ number_format($product->total_quantity, 3) }}</td>
+                                    <td class="text-end fw-semibold">{{ number_format($product->total_amount, 2) }}</td>
+                                </tr>
+                            @empty
+                                <tr><td colspan="3" class="text-center text-muted py-3">No sales data yet.</td></tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-3 mt-1">
+        <div class="col-12 col-lg-8">
+            <div class="table-card">
+                <div class="card-header"><i class="bi bi-box-seam me-2" style="color:var(--accent);"></i>Stock Report</div>
+                <div class="table-responsive">
+                    <table class="table mb-0">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Type</th>
+                                <th class="text-end">Current Stock</th>
+                                <th class="text-end">Minimum</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($stockReport as $item)
+                                <tr>
+                                    <td>{{ $item->name }}</td>
+                                    <td>{{ ucfirst(str_replace('_', ' ', $item->item_type)) }}</td>
+                                    <td class="text-end">{{ number_format($item->stock_quantity, 3) }} {{ $item->unit }}</td>
+                                    <td class="text-end">{{ $item->reorder_level !== null ? number_format($item->reorder_level, 3) . ' ' . $item->unit : '—' }}</td>
+                                </tr>
+                            @empty
+                                <tr><td colspan="4" class="text-center text-muted py-3">No stock-tracked items yet.</td></tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-4">
+            <div class="table-card h-100">
+                <div class="card-header"><i class="bi bi-exclamation-triangle me-2" style="color:var(--accent);"></i>Low Stock Report</div>
+                <div class="table-responsive">
+                    <table class="table mb-0">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th class="text-end">Stock</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($lowStockReport as $item)
+                                <tr>
+                                    <td>{{ $item->name }}</td>
+                                    <td class="text-end text-danger fw-semibold">{{ number_format($item->stock_quantity, 3) }}</td>
+                                </tr>
+                            @empty
+                                <tr><td colspan="2" class="text-center text-muted py-3">No low stock items.</td></tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NEW: RETAIL SALES REPORT -->
+    <div class="row g-3 mt-4">
+        <div class="col-12">
+            <h6 class="text-muted mb-3"><i class="bi bi-shop me-2"></i>Retail Sales Report — {{ $year }}</h6>
+        </div>
+        <div class="col-12">
+            <div class="table-card">
+                <div class="table-responsive">
+                    <table class="table mb-0">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th class="text-center">Sales Count</th>
+                                <th class="text-end">Total Revenue (AED)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($dailySalesReport as $report)
+                                <tr>
+                                    <td>{{ \Carbon\Carbon::parse($report->sale_date)->format('M d, Y') }}</td>
+                                    <td class="text-center">{{ $report->sales_count }}</td>
+                                    <td class="text-end fw-semibold">{{ number_format($report->total_revenue, 2) }}</td>
+                                </tr>
+                            @empty
+                                <tr><td colspan="3" class="text-center text-muted py-3">No retail sales data for {{ $year }}.</td></tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NEW: PROJECT REVENUE REPORT -->
+    <div class="row g-3 mt-4">
+        <div class="col-12">
+            <h6 class="text-muted mb-3"><i class="bi bi-briefcase me-2"></i>Project Revenue Report — {{ $year }}</h6>
+        </div>
+        <div class="col-12 col-lg-8">
+            <div class="table-card">
+                <div class="table-responsive">
+                    <table class="table mb-0">
+                        <thead>
+                            <tr>
+                                <th>Project Date</th>
+                                <th class="text-center">Projects</th>
+                                <th class="text-end">Total Income (AED)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($projectRevenueReport as $report)
+                                <tr>
+                                    <td>{{ \Carbon\Carbon::parse($report->project_date)->format('M d, Y') }}</td>
+                                    <td class="text-center">{{ $report->project_count }}</td>
+                                    <td class="text-end fw-semibold">{{ number_format($report->total_income, 2) }}</td>
+                                </tr>
+                            @empty
+                                <tr><td colspan="3" class="text-center text-muted py-3">No project data for {{ $year }}.</td></tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-4">
+            <div class="table-card h-100">
+                <div class="card-header"><i class="bi bi-percent me-2" style="color:var(--accent);"></i>Project Expenses by Category</div>
+                <div class="table-responsive">
+                    <table class="table mb-0">
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th class="text-end">Amount (AED)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($projectExpensesReport as $expense)
+                                <tr>
+                                    <td><span class="badge {{ match($expense->category) { 'materials' => 'bg-navy', 'labor' => 'bg-info', 'transport' => 'bg-secondary', 'tools' => 'bg-dark', default => 'bg-secondary' } }}">{{ ucfirst(str_replace('_', ' ', $expense->category)) }}</span></td>
+                                    <td class="text-end fw-semibold">{{ number_format($expense->total_amount, 2) }}</td>
+                                </tr>
+                            @empty
+                                <tr><td colspan="2" class="text-center text-muted py-3">No expense data.</td></tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NEW: MANUFACTURING COST REPORT -->
+    <div class="row g-3 mt-4">
+        <div class="col-12">
+            <h6 class="text-muted mb-3"><i class="bi bi-gear-wide-connected me-2"></i>Manufacturing Cost Report — {{ $year }}</h6>
+        </div>
+        <div class="col-12 col-lg-8">
+            <div class="table-card">
+                <div class="table-responsive">
+                    <table class="table mb-0">
+                        <thead>
+                            <tr>
+                                <th>Production #</th>
+                                <th class="text-center">Quantity</th>
+                                <th class="text-end">Total Material Cost (AED)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($manufacturingCostReport as $prod)
+                                <tr>
+                                    <td><code>{{ $prod->production_number }}</code></td>
+                                    <td class="text-center">{{ number_format($prod->quantity_to_produce, 3) }}</td>
+                                    <td class="text-end fw-semibold">{{ number_format($prod->total_material_cost ?? 0, 2) }}</td>
+                                </tr>
+                            @empty
+                                <tr><td colspan="3" class="text-center text-muted py-3">No manufacturing data for {{ $year }}.</td></tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-4">
+            <div class="table-card h-100">
+                <div class="card-header"><i class="bi bi-exclamation-triangle me-2" style="color:var(--accent);"></i>Low Raw Materials</div>
+                <div class="table-responsive">
+                    <table class="table mb-0">
+                        <thead>
+                            <tr>
+                                <th>Material</th>
+                                <th class="text-end">Stock</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($lowMaterials as $item)
+                                <tr>
+                                    <td><small>{{ $item->name }}</small></td>
+                                    <td class="text-end text-danger fw-semibold"><small>{{ number_format($item->stock_quantity, 3) }}</small></td>
+                                </tr>
+                            @empty
+                                <tr><td colspan="2" class="text-center text-muted py-3"><small>No low materials.</small></td></tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('scripts')

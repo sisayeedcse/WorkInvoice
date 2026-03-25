@@ -14,15 +14,18 @@ class PurchaseOrder extends Model
         'po_number', 'supplier_name', 'supplier_phone', 'supplier_email', 'supplier_address',
         'date', 'delivery_date', 'subtotal', 'discount', 'tax', 'grand_total', 'status',
         'notes', 'terms', 'order_id', 'created_by',
+        'stock_received', 'received_at', 'received_by',
     ];
 
     protected $casts = [
-        'date'          => 'date',
-        'delivery_date' => 'date',
-        'subtotal'      => 'decimal:2',
-        'discount'      => 'decimal:2',
-        'tax'           => 'decimal:2',
-        'grand_total'   => 'decimal:2',
+        'date'           => 'date',
+        'delivery_date'  => 'date',
+        'received_at'    => 'datetime',
+        'subtotal'       => 'decimal:2',
+        'discount'       => 'decimal:2',
+        'tax'            => 'decimal:2',
+        'grand_total'    => 'decimal:2',
+        'stock_received' => 'boolean',
     ];
 
     public static function generateNumber(): string
@@ -47,6 +50,16 @@ class PurchaseOrder extends Model
     public function order()
     {
         return $this->belongsTo(Order::class);
+    }
+
+    public function receivedBy()
+    {
+        return $this->belongsTo(User::class, 'received_by');
+    }
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by');
     }
 
     public function getStatusBadgeAttribute(): string

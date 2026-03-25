@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Item;
 use App\Models\PurchaseOrder;
 use App\Models\PurchaseOrderItem;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -162,5 +163,55 @@ class PurchaseOrderController extends Controller
         $request->validate(['status' => 'required|in:draft,sent,received,cancelled']);
         $purchaseOrder->update(['status' => $request->status]);
         return back()->with('success', 'Status updated.');
+    }
+
+    public function receiveStock(PurchaseOrder $purchaseOrder)
+    {
+        if ($purchaseOrder->stock_received) {
+            return back()->with('info', 'Stock has already been received for this purchase order.');
+        }
+
+        try {
+            DB::transaction(function () use ($purchaseOrder) {
+                $purchaseOrder->load('items.item');
+
+                foreach ($purchaseOrder->items as $poItem) {
+                    $item = $poItem->item_id
+                        ? Item::find($poItem->item_id)
+                        : Item::where('name', $poItem->item_name)->first();
+
+                    if (!$item || !$item->track_inventory) {
+                        continue;
+                    }
+
+                    $remainingQty = (float) $poItem->quantity - (float) $poItem->received_quantity;
+                    if ($remainingQty <= 0) {
+                        continue;
+                    }
+
+                    $item->addStock(
+                        $remainingQty,
+                        'purchase',
+                        $purchaseOrder->id,
+                        "Received from {$purchaseOrder->po_number}"
+                    );
+
+                    $poItem->update([
+                        'received_quantity' => $poItem->quantity,
+                    ]);
+                }
+
+                $purchaseOrder->update([
+                    'status' => 'received',
+                    'stock_received' => true,
+                    'received_at' => now(),
+                    'received_by' => auth()->id(),
+                ]);
+            });
+
+            return back()->with('success', 'Stock received successfully and inventory updated.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Failed to receive stock: ' . $e->getMessage());
+        }
     }
 }

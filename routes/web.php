@@ -5,11 +5,14 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\ProductionOrderController;
 use App\Http\Controllers\PurchaseOrderController;
 use App\Http\Controllers\QuotationController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\SaleController;
 use App\Http\Controllers\SettingController;
 use Illuminate\Support\Facades\Route;
 
@@ -41,6 +44,25 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/items/search', [ItemController::class, 'search'])->name('items.search');
     Route::resource('items', ItemController::class)->except(['show']);
 
+    // Products / Inventory
+    Route::get('/products/search', [ProductController::class, 'search'])->name('products.search');
+    Route::get('/products/{product}/adjust-stock', [ProductController::class, 'adjustStock'])->name('products.adjust-stock');
+    Route::patch('/products/{product}/update-stock', [ProductController::class, 'updateStock'])->name('products.update-stock');
+    Route::resource('products', ProductController::class);
+
+    // POS + Sales
+    Route::get('/pos', [SaleController::class, 'create'])->name('pos.index');
+    Route::post('/pos/checkout', [SaleController::class, 'posCheckout'])->name('pos.checkout');
+    Route::get('/sales/daily-summary', [SaleController::class, 'dailySummary'])->name('sales.daily-summary');
+    Route::get('/sales/{sale}/receipt', [SaleController::class, 'receipt'])->name('sales.receipt');
+    Route::resource('sales', SaleController::class)->only(['index', 'create', 'store', 'show', 'destroy']);
+
+    // Production
+    Route::post('/production-orders/{productionOrder}/start', [ProductionOrderController::class, 'start'])->name('production-orders.start');
+    Route::post('/production-orders/{productionOrder}/complete', [ProductionOrderController::class, 'complete'])->name('production-orders.complete');
+    Route::patch('/production-orders/{productionOrder}/status', [ProductionOrderController::class, 'updateStatus'])->name('production-orders.update-status');
+    Route::resource('production-orders', ProductionOrderController::class);
+
     // Quotations
     Route::post('/quotations/{quotation}/duplicate', [QuotationController::class, 'duplicate'])->name('quotations.duplicate');
     Route::post('/quotations/{quotation}/convert-to-order', [QuotationController::class, 'convertToOrder'])->name('quotations.convert-to-order');
@@ -63,6 +85,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Purchase Orders
     Route::patch('/purchase-orders/{purchaseOrder}/status', [PurchaseOrderController::class, 'updateStatus'])->name('purchase-orders.update-status');
+    Route::post('/purchase-orders/{purchaseOrder}/receive-stock', [PurchaseOrderController::class, 'receiveStock'])->name('purchase-orders.receive-stock');
     Route::get('/purchase-orders/{purchaseOrder}/pdf', [PurchaseOrderController::class, 'pdf'])->name('purchase-orders.pdf');
     Route::resource('purchase-orders', PurchaseOrderController::class);
 

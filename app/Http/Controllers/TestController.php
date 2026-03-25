@@ -66,7 +66,6 @@ class TestController extends Controller
             ], 500);
         }
     }
-}
 
     public function testDeleteModel()
     {
@@ -113,3 +112,4 @@ class TestController extends Controller
             ], 500);
         }
     }
+}

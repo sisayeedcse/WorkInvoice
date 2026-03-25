@@ -52,6 +52,11 @@ class Project extends Model
         return $this->hasMany(ProjectExpense::class)->orderByDesc('expense_date');
     }
 
+    public function productionOrders()
+    {
+        return $this->hasMany(ProductionOrder::class);
+    }
+
     /**
      * Accessors for calculations
      */
