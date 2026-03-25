@@ -160,6 +160,22 @@ class InvoiceController extends Controller
                 'balance'     => max(0, $newBalance),
                 'status'      => $newStatus,
             ]);
+
+            // Update linked project payment status if exists
+            if ($invoice->order && $invoice->order->project) {
+                $project = $invoice->order->project;
+                $totalPaid = $project->advance_received + $invoice->paid_amount;
+
+                if ($totalPaid >= $project->total_revenue) {
+                    $project->payment_status = 'paid';
+                } elseif ($totalPaid > 0) {
+                    $project->payment_status = 'partial';
+                } else {
+                    $project->payment_status = 'unpaid';
+                }
+
+                $project->save();
+            }
         });
 
         return back()->with('success', 'Payment recorded successfully.');

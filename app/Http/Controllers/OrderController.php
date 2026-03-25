@@ -7,6 +7,7 @@ use App\Models\Invoice;
 use App\Models\InvoiceItem;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\Project;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -176,5 +177,35 @@ class OrderController extends Controller
 
         return redirect()->route('invoices.index')
             ->with('success', 'Invoice created from order.');
+    }
+
+    public function convertToProject(Order $order)
+    {
+        $order->load('customer');
+
+        // Check if project already exists
+        if ($order->project) {
+            return redirect()->route('projects.show', $order->project)
+                ->with('info', 'Project already exists for this order.');
+        }
+
+        $project = null;
+
+        DB::transaction(function () use ($order, &$project) {
+            $project = Project::create([
+                'project_number'   => Project::generateNumber(),
+                'order_id'         => $order->id,
+                'project_name'     => $order->customer->name . ' - ' . $order->order_number,
+                'start_date'       => now()->toDateString(),
+                'status'           => 'pending',
+                'total_revenue'    => $order->grand_total,
+                'advance_received' => 0,
+                'payment_status'   => 'unpaid',
+                'created_by'       => auth()->id(),
+            ]);
+        });
+
+        return redirect()->route('projects.show', $project)
+            ->with('success', 'Project created successfully.');
     }
 }

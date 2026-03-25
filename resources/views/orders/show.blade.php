@@ -24,6 +24,19 @@
                     <i class="bi bi-receipt me-1"></i> View Invoice
                 </a>
             @endif
+            @if(!$order->project && in_array($order->status, ['approved', 'in_progress', 'completed', 'delivered']))
+                <form method="POST" action="{{ route('orders.convert-to-project', $order) }}" class="d-inline"
+                      onsubmit="return confirm('Convert this order to a project?')">
+                    @csrf
+                    <button class="btn btn-accent btn-sm">
+                        <i class="bi bi-kanban me-1"></i> Convert to Project
+                    </button>
+                </form>
+            @elseif($order->project)
+                <a href="{{ route('projects.show', $order->project) }}" class="btn btn-outline-accent btn-sm">
+                    <i class="bi bi-kanban me-1"></i> View Project
+                </a>
+            @endif
             <a href="{{ route('orders.edit', $order) }}" class="btn btn-primary btn-sm">
                 <i class="bi bi-pencil me-1"></i> Edit
             </a>
@@ -71,6 +84,11 @@
                             <div class="meta-item"><span class="meta-label">Source Quotation</span>
                                 <div class="meta-value"><a href="{{ route('quotations.show', $order->quotation) }}"
                                         class="doc-number">{{ $order->quotation->quotation_number }}</a></div>
+                        </div>@endif
+                        @if($order->project)
+                            <div class="meta-item"><span class="meta-label">Project</span>
+                                <div class="meta-value"><a href="{{ route('projects.show', $order->project) }}"
+                                        class="doc-number">{{ $order->project->project_number }}</a></div>
                         </div>@endif
                     </div>
                 </div>

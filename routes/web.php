@@ -6,6 +6,7 @@ use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\PurchaseOrderController;
 use App\Http\Controllers\QuotationController;
 use App\Http\Controllers\ReportController;
@@ -50,7 +51,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Orders
     Route::patch('/orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.update-status');
     Route::post('/orders/{order}/convert-to-invoice', [OrderController::class, 'convertToInvoice'])->name('orders.convert-to-invoice');
+    Route::post('/orders/{order}/convert-to-project', [OrderController::class, 'convertToProject'])->name('orders.convert-to-project');
     Route::resource('orders', OrderController::class);
+
+    // Projects
+    Route::resource('projects', ProjectController::class)->only(['index', 'show']);
+    Route::patch('/projects/{project}/status', [ProjectController::class, 'updateStatus'])->name('projects.update-status');
+    Route::post('/projects/{project}/expenses', [ProjectController::class, 'storeExpense'])->name('projects.add-expense');
+    Route::delete('/projects/{project}/expenses/{expense}', [ProjectController::class, 'destroyExpense'])->name('projects.delete-expense');
+    Route::patch('/projects/{project}/advance', [ProjectController::class, 'updateAdvance'])->name('projects.update-advance');
 
     // Purchase Orders
     Route::patch('/purchase-orders/{purchaseOrder}/status', [PurchaseOrderController::class, 'updateStatus'])->name('purchase-orders.update-status');

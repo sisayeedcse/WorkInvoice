@@ -64,6 +64,48 @@
         </div>
     </div>
 
+    <!-- Project Statistics Row -->
+    <div class="row g-3 mb-4">
+        <div class="col-12">
+            <h6 class="text-muted mb-3"><i class="bi bi-kanban me-2"></i>Project Performance</h6>
+        </div>
+        <div class="col-6 col-lg-2-4">
+            <div class="stat-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                <div class="stat-icon"><i class="bi bi-kanban-fill"></i></div>
+                <div class="stat-value">{{ number_format($totalProjects) }}</div>
+                <div class="stat-label">Total Projects</div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-2-4">
+            <div class="stat-card bg-blue">
+                <div class="stat-icon"><i class="bi bi-play-circle-fill"></i></div>
+                <div class="stat-value">{{ number_format($activeProjects) }}</div>
+                <div class="stat-label">Active Projects</div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-2-4">
+            <div class="stat-card bg-green">
+                <div class="stat-icon"><i class="bi bi-check-circle-fill"></i></div>
+                <div class="stat-value">{{ number_format($completedProjects) }}</div>
+                <div class="stat-label">Completed</div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-2-4">
+            <div class="stat-card {{ $totalProfit >= 0 ? 'bg-green' : 'bg-red' }}">
+                <div class="stat-icon"><i class="bi bi-cash-coin"></i></div>
+                <div class="stat-value">{{ $totalProfit >= 0 ? '' : '-' }}{{ number_format(abs($totalProfit), 0) }}</div>
+                <div class="stat-label">Total Profit (AED)</div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-2-4">
+            <div class="stat-card bg-amber">
+                <div class="stat-icon"><i class="bi bi-exclamation-circle-fill"></i></div>
+                <div class="stat-value">{{ number_format($projectsDue) }}</div>
+                <div class="stat-label">Payment Due</div>
+            </div>
+        </div>
+    </div>
+
     <!-- Charts Row -->
     <div class="row g-3 mb-4">
         <div class="col-12 col-lg-8">

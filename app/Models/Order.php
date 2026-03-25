@@ -57,6 +57,11 @@ class Order extends Model
         return $this->hasMany(PurchaseOrder::class);
     }
 
+    public function project()
+    {
+        return $this->hasOne(Project::class);
+    }
+
     public function getStatusBadgeAttribute(): string
     {
         return match ($this->status) {

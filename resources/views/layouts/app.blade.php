@@ -71,6 +71,12 @@
                 <i class="bi bi-receipt-cutoff"></i><span>Invoices</span>
             </a>
 
+            <div class="nav-section">Operations</div>
+            <a href="{{ route('projects.index') }}"
+                class="nav-link {{ request()->routeIs('projects.*') ? 'active' : '' }}">
+                <i class="bi bi-kanban"></i><span>Projects</span>
+            </a>
+
             <div class="nav-section">Analytics</div>
             <a href="{{ route('reports.index') }}"
                 class="nav-link {{ request()->routeIs('reports.*') ? 'active' : '' }}">
